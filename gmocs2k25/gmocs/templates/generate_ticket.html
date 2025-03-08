@@ -1,0 +1,6 @@
+<form method="post">
+    {% csrf_token %}
+    <label>Amount:</label>
+    <input type="number" name="amount" required>
+    <button type="submit">Generate Ticket</button>
+</form>

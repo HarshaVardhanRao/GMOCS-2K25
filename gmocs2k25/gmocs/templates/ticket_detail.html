@@ -1,0 +1,19 @@
+<h2>Payment Ticket</h2>
+<p>Ticket ID: {{ ticket.ticket_id }}</p>
+<p>Amount: ₹{{ ticket.amount }}</p>
+<p>Status: {{ ticket.status }}</p>
+<p>Expires At: {{ ticket.expires_at }}</p>
+
+{% if ticket.qr_code %}
+    <img src="{{ ticket.qr_code.url }}" alt="UPI QR Code">
+    <p>Scan the QR code to pay via UPI</p>
+{% endif %}
+
+{% if ticket.status == "pending" %}
+    <form method="post" action="{% url 'confirm_payment' ticket.ticket_id %}">
+        {% csrf_token %}
+        <label>Enter UPI Transaction ID:</label>
+        <input type="text" name="transaction_id" required>
+        <button type="submit">Confirm Payment</button>
+    </form>
+{% endif %}
