@@ -1,1 +1,30 @@
-<h1>Ready for Blast @ <strong>GMOCS - 2K25</strong></h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>GMOCS-2k25 | Technical Symposium</title>
+		<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+
+	<body>
+		<main class="hero">
+			<div class="grid-overlay"></div>
+			<div class="particles" id="particles"></div>
+			<div class="content-wrapper">
+				<h1 class="title">GMOCS</h1>
+				<p class="subtitle">Technical Symposium 2k25</p>
+				<p class="organizer">Organized by Dept of CSE - MITS</p>
+				<div class="coming-soon">Coming Soon</div>
+			</div>
+		</main>
+		<script type="module" src="{% static 'js/main.js' %}"></script>
+	</body>
+</html>

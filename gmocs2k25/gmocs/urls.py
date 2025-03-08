@@ -6,6 +6,8 @@ urlpatterns = [
     path('generate/', views.generate_ticket, name='generate_ticket'),
     path('ticket/<uuid:ticket_id>/', views.ticket_detail, name='ticket_detail'),
     path('confirm-payment/<uuid:ticket_id>/', views.confirm_payment, name='confirm_payment'),
+    path('events/', views.event_list, name='event_list'),
+    path('register/<int:event_id>/', views.register_event, name='register_event'),
 ]
 from django.conf import settings
 from django.conf.urls.static import static

@@ -4,9 +4,9 @@ from django.core.files.base import ContentFile
 from django.db import models
 import uuid
 
+
 class PaymentTicket(models.Model):
     ticket_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('paid', 'Paid')], default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -25,3 +25,40 @@ class PaymentTicket(models.Model):
 
     def __str__(self):
         return f"Ticket {self.ticket_id} - {self.user.username} - {self.amount}"
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.name}"
+    
+
+class Events(models.Model):
+    Category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    date = models.DateTimeField()
+    location = models.CharField(max_length=100)
+    description = models.TextField()
+    image = models.ImageField(upload_to='event_images/', blank=True, null=True)
+    price = models.IntegerField()
+    def __str__(self):
+        return f"{self.name}"
+
+class RegisteredUser(models.Model):
+    name = models.CharField(max_length=100)
+    roll_no = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20)
+    year = models.IntegerField()
+    branch = models.CharField(max_length=20)
+    section = models.CharField(max_length=20)
+    
+    def __str__(self):
+        return f"{self.name} - {self.roll_no}"
+
+class registrations(models.Model):
+    user = models.ForeignKey(RegisteredUser, on_delete=models.CASCADE)
+    event = models.ForeignKey(Events, on_delete=models.CASCADE)
+    Payment = models.ForeignKey(PaymentTicket, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.name} - {self.event.name}"
