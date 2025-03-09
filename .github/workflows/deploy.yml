@@ -3,7 +3,7 @@ name: Deploy to PythonAnywhere
 on:
   push:
     branches:
-      - master  # Change this to your branch name if needed
+      - master
 
 jobs:
   deploy:
@@ -15,5 +15,5 @@ jobs:
 
       - name: Deploy to PythonAnywhere
         run: |
-          curl -X POST "https://www.pythonanywhere.com/api/v0/user/GMOCS/webapps/gmocs.pythonanywhere.com/reload/" \
-               -H "Authorization: Token ${{ secrets.PYTHONANYWHERE_API_TOKEN }}"
+          curl -X POST "https://gmocs.pythonanywhere.com:5000/deploy" \
+               -H "Authorization: Bearer YOUR_SECRET_KEY"
