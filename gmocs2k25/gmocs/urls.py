@@ -10,6 +10,7 @@ urlpatterns = [
     path('register/<int:event_id>/', views.register_event, name='register_event'),
     path('registrations/', views.registration_list, name='registration_list'),
     path('login',views.login_user, name='login'),
+    path("deploy", views.DeployView.as_view(), name="deploy"),
 ]
 from django.conf import settings
 from django.conf.urls.static import static
