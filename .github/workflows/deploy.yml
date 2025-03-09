@@ -3,25 +3,17 @@ name: Deploy to PythonAnywhere
 on:
   push:
     branches:
-      - master
+      - master  # Change this to your branch name if needed
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Deploy to PythonAnywhere
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ssh.pythonanywhere.com
-          username: GMOCS
-          password: GMOCS@2k25#
-          script: |
-            cd /home/GMOCS/GMOCS-2K25
-            git pull origin master
-            source /home/GMOCS/venv/bin/activate
-            python manage.py migrate
-            touch /var/www/gmocs_pythonanywhere_com_wsgi.py
+        run: |
+          curl -X POST "https://www.pythonanywhere.com/api/v0/user/GMOCS/webapps/gmocs.pythonanywhere.com/reload/" \
+               -H "Authorization: Token ${{ secrets.PYTHONANYWHERE_API_TOKEN }}"
