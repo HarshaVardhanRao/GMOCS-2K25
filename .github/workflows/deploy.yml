@@ -14,12 +14,10 @@ jobs:
         with:
           host: ssh.pythonanywhere.com
           username: GMOCS
-          password: ${{ secrets.PA_PASSWORD }}  # Store your PA password as a secret
+          password: GMOCS@2k25#  # Store your PA password as a secret
           script: |
-            cd /home/GMOCS/GMOCS-2K25/gmocs2k25  # Navigate to Django project directory
-            git pull https://HarshaVardhanRao:${{ secrets.GT_PAT }}@github.com/HarshaVardhanRao/GMOCS-2K25.git master
-            source /home/GMOCS/venv/bin/activate  # Activate virtual environment
-            #pip install -r requirements.txt   Install dependencies if needed
-            python manage.py migrate  # Apply migrations
-            # python manage.py collectstatic --noinput  # Collect static files if needed
-            touch /var/www/gmocs_pythonanywhere_com_wsgi.py  # Reload Django app
+            cd /home/GMOCS/GMOCS-2K25/gmocs2k25
+            git pull origin master
+            source /home/GMOCS/venv/bin/activate
+            python manage.py migrate
+            touch /var/www/gmocs_pythonanywhere_com_wsgi.py
