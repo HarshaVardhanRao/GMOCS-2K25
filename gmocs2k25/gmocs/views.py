@@ -147,6 +147,7 @@ from django.http import JsonResponse
 import os
 import hmac
 import subprocess
+import hashlib
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views import View
