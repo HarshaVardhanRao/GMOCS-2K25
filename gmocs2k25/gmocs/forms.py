@@ -1,7 +1,7 @@
 from django import forms
-from .models import RegisteredUser
+from .models import registrations
 
 class RegistrationForm(forms.ModelForm):
     class Meta:
-        model = RegisteredUser
-        fields = ['name', 'roll_no', 'phone', 'year', 'branch', 'section']
+        model = registrations
+        fields = ['username', 'roll_no', 'phone', 'year', 'branch', 'section']

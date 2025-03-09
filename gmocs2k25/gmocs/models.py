@@ -3,6 +3,8 @@ from io import BytesIO
 from django.core.files.base import ContentFile
 from django.db import models
 import uuid
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 class PaymentTicket(models.Model):
@@ -24,7 +26,7 @@ class PaymentTicket(models.Model):
         buffer.close()
 
     def __str__(self):
-        return f"Ticket {self.ticket_id} - {self.user.username} - {self.amount}"
+        return f"Ticket {self.ticket_id} - {self.amount}"
 
 
 class Category(models.Model):
@@ -32,6 +34,10 @@ class Category(models.Model):
     def __str__(self):
         return f"{self.name}"
     
+def get_default_coordinator():
+    return User.objects.filter(is_superuser=False).first().id  # Picks the first non-superuser
+
+
 
 class Events(models.Model):
     Category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -41,24 +47,24 @@ class Events(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='event_images/', blank=True, null=True)
     price = models.IntegerField()
+    coordinator = models.ForeignKey(
+        User, on_delete=models.SET_NULL, related_name='coordinator', default=get_default_coordinator, blank=True, null=True
+    )
+
     def __str__(self):
         return f"{self.name}"
 
-class RegisteredUser(models.Model):
-    name = models.CharField(max_length=100)
+
+
+class registrations(models.Model):
+    username = models.CharField(max_length=100)
     roll_no = models.CharField(max_length=20)
     phone = models.CharField(max_length=20)
     year = models.IntegerField()
     branch = models.CharField(max_length=20)
     section = models.CharField(max_length=20)
-    
-    def __str__(self):
-        return f"{self.name} - {self.roll_no}"
-
-class registrations(models.Model):
-    user = models.ForeignKey(RegisteredUser, on_delete=models.CASCADE)
     event = models.ForeignKey(Events, on_delete=models.CASCADE)
-    Payment = models.ForeignKey(PaymentTicket, on_delete=models.CASCADE)
+    Payment = models.ForeignKey(PaymentTicket, on_delete=models.CASCADE,related_name='payment', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.user.name} - {self.event.name}"
+        return f"{self.username} - {self.event.name}"
