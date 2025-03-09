@@ -168,16 +168,16 @@ def deploy_view(request):
         if not signature or not verify_signature(request.body, signature):
             return JsonResponse({"error": "Unauthorized"}, status=403)
 
-            try:
-                # Pull the latest code
-                repo_path = "/home/GMOCS/GMOCS-2K25"
-                subprocess.run(["git", "-C", repo_path, "pull", "origin", "master"], check=True)
+        try:
+            # Pull the latest code
+            repo_path = "/home/GMOCS/GMOCS-2K25"
+            subprocess.run(["git", "-C", repo_path, "pull", "origin", "master"], check=True)
 
-                # Restart the app
-                subprocess.run(["touch", "/var/www/gmocs_pythonanywhere_com_wsgi.py"], check=True)
+            # Restart the app
+            subprocess.run(["touch", "/var/www/gmocs_pythonanywhere_com_wsgi.py"], check=True)
 
-                return JsonResponse({"status": "Success", "message": "Deployment complete!"})
+            return JsonResponse({"status": "Success", "message": "Deployment complete!"})
 
-            except Exception as e:
-                return JsonResponse({"error": str(e)}, status=500)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
     return JsonResponse({"error": "Unexpected Error"}, status = 500)
