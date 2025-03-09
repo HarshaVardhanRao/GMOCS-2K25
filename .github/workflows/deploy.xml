@@ -1,0 +1,25 @@
+name: Deploy to PythonAnywhere
+
+on:
+  push:
+    branches:
+      - main  # Change to your branch if different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connect & Deploy to PythonAnywhere
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ssh.pythonanywhere.com
+          username: GMOCS
+          password: ${{ secrets.PA_PASSWORD }}  # Store your PA password as a secret
+          script: |
+            cd /home/GMOCS/GMOCS  # Change to your Django project directory
+            git pull https://HarshaVardhanRao:${{ secrets.GT_PAT }}@github.com/HarshaVardhanRao/GMOCS-2K25.git main
+            source venv/bin/activate  # Activate virtual environment
+            pip install -r requirements.txt  # Install dependencies if needed
+            python manage.py migrate  # Apply migrations
+            #python manage.py collectstatic --noinput  # Collect static files
+            touch /var/www/gmocs_pythonanywhere_com_wsgi.py  # Reload Django app
