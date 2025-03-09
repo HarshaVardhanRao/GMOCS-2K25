@@ -157,9 +157,9 @@ def verify_signature(payload, signature):
     mac = hmac.new(GITHUB_SECRET, payload, hashlib.sha256).hexdigest()
     return hmac.compare_digest("sha256=" + mac, signature)
 
-@method_decorator(csrf_exempt, name="dispatch")
-class DeployView(View):
-    def post(self, request, *args, **kwargs):
+@csrf_exempt
+def deploy_view(request):
+    if request.method == "POST":
         signature = request.headers.get("X-Hub-Signature-256")
 
         # Validate the request
@@ -178,3 +178,5 @@ class DeployView(View):
 
             except Exception as e:
                 return JsonResponse({"error": str(e)}, status=500)
+    else:
+        return JsonResponse({"error": str(e)}, status = 500)
