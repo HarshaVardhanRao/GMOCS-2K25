@@ -151,6 +151,8 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.conf import settings
 
+GITHUB_SECRET = b"Thisissecretcode"
+
 def verify_signature(payload, signature):
     mac = hmac.new(GITHUB_SECRET, payload, hashlib.sha256).hexdigest()
     return hmac.compare_digest("sha256=" + mac, signature)
