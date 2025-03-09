@@ -145,6 +145,7 @@ def confirm_payment(request, ticket_id):
 
 from django.http import JsonResponse
 import os
+import hmac
 import subprocess
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
