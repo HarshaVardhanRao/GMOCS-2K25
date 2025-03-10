@@ -23,7 +23,7 @@ def register_event(request, event_id):
         event = get_object_or_404(Events, id=event_id)
         if form.is_valid():
             form.instance.event = event
-            user = form.save()
+            # user = form.save()
 
             payment_ticket = PaymentTicket.objects.create(
                 amount=event.price,
@@ -32,7 +32,9 @@ def register_event(request, event_id):
 
             payment_ticket.generate_qr(UPI_ID)
 
-            registrations.objects.create(event=event, Payment=payment_ticket)
+            form.instance.Payment = payment_ticket
+            registration = form.save()
+            # registrations.objects.create(event=event, Payment=payment_ticket)
 
             return redirect('ticket_detail', ticket_id=payment_ticket.ticket_id)
 
@@ -90,7 +92,8 @@ def registration_list(request):
         }
         return render(request, 'registrations.html', context)
     elif request.user.is_authenticated:
-        event = Events.objects.filter(coordinator=request.user.username).first()
+        
+        event = Events.objects.filter(coordinator=request.user.id).first()
         regs = registrations.objects.filter(event=event)
         return render(request, 'registrations.html', {'registrations': regs})
     else:

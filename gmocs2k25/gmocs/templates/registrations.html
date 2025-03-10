@@ -74,6 +74,7 @@
                 <th>Mobile Number</th>
                 <th>Event</th>
                 <th>Date</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -89,6 +90,7 @@
                     <td>{{ registration.phone }}</td>
                     <td>{{ registration.event.name }}</td>
                     <td>{{ registration.Payment.created_at }}</td>
+                    <td>{{ registration.Payment.status }}</td>
                 </tr>
             {% empty %}
                 <tr>

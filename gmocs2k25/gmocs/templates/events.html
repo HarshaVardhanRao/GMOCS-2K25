@@ -29,6 +29,8 @@
                 <p><strong>Location:</strong> {{ event.location }}</p>
                 <p><strong>Description:</strong> {{ event.description }}</p>
                 <p><strong>Price:</strong> ₹{{ event.price }}</p>
+                <p><strong>Coordinator Name:</strong> {{ event.coordinator.first_name }}</p>
+                <p><strong>Coordinator Phone:</strong> {{ event.coordinator.last_name }}</p>
                 {% if event.image %}
                     <img src="{{ event.image.url }}" alt="{{ event.name }}" width="200">
                 {% endif %}
