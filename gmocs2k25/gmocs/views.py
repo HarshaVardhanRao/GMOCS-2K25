@@ -177,10 +177,6 @@ def deploy_view(request):
             repo_path = "/home/gmocs/GMOCS-2K25/gmocs2k25"
             subprocess.run(["git", "-C", repo_path, "pull", "origin", "master"], check=True)
 
-            # Restart the app
-            subprocess.run(["sudo", "/bin/systemctl", "restart", "gunicorn"], check=True)
-            time.sleep(3)
-
             return JsonResponse({"status": "Success", "message": "Deployment complete!"})
 
         except Exception as e:
