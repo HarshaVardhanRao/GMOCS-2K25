@@ -177,7 +177,7 @@ def deploy_view(request):
             subprocess.run(["git", "-C", repo_path, "pull", "origin", "master"], check=True)
 
             # Restart the app
-            subprocess.run(["sudo", "systemctl", "restart", "gunicorn"], check=True)
+            subprocess.run(["sudo", "/bin/systemctl", "restart", "gunicorn"], check=True)
 
             return JsonResponse({"status": "Success", "message": "Deployment complete!"})
 
