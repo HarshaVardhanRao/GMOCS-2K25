@@ -178,6 +178,7 @@ def deploy_view(request):
 
             # Restart the app
             subprocess.run(["sudo", "/bin/systemctl", "restart", "gunicorn"], check=True)
+            time.sleep(3)
 
             return JsonResponse({"status": "Success", "message": "Deployment complete!"})
 
