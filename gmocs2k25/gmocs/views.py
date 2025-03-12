@@ -173,11 +173,11 @@ def deploy_view(request):
 
         try:
             # Pull the latest code
-            repo_path = "/home/GMOCS/GMOCS-2K25"
+            repo_path = "/home/gmocs/GMOCS-2K25/gmocs2k25"
             subprocess.run(["git", "-C", repo_path, "pull", "origin", "master"], check=True)
 
             # Restart the app
-            subprocess.run(["touch", "/var/www/gmocs_pythonanywhere_com_wsgi.py"], check=True)
+            subprocess.run(["sudo", "systemctl", "restart", "gunicorn"], check=True)
 
             return JsonResponse({"status": "Success", "message": "Deployment complete!"})
 
