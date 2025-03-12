@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Category, Events, registrations, PaymentTicket
 from .forms import RegistrationForm
 from datetime import timedelta,datetime
+import time
 
 UPI_ID = "hvijapuram-3@okaxis"
 
