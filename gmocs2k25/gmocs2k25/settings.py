@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-kl2hz4$f6f@$_c3f+nd%&z^-2(c&zhm$=4*nhmsq3xfc^y!5so
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 #Verified in production
-ALLOWED_HOSTS = ['98.70.72.145', 'gmocs.live', 'gmocs.pythonanywhere.com','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['98.70.72.145','www.gmocs.live', 'gmocs.live', 'gmocs.pythonanywhere.com','127.0.0.1','localhost']
 
 
 # Application definition
