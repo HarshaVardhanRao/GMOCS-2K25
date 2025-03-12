@@ -184,3 +184,6 @@ def deploy_view(request):
     return JsonResponse({"error": "Unexpected Error"}, status = 500)
 
 # Just Updated
+
+def hello(request):
+    return HttpResponse("<h1>Hello Developer</h1>")

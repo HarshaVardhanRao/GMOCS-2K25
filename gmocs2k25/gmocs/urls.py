@@ -11,6 +11,7 @@ urlpatterns = [
     path('registrations/', views.registration_list, name='registration_list'),
     path('login',views.login_user, name='login'),
     path("deploy", views.deploy_view, name="deploy"),
+    path("hello", views.hello, name="hello")
 ]
 from django.conf import settings
 from django.conf.urls.static import static
