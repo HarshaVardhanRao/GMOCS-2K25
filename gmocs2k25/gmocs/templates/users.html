@@ -1,0 +1,45 @@
+<h5>Complete Pending Registrations</h5>
+		<form action="{% url 'index' %}" method="post">
+			{% csrf_token %}
+			<input type="text" name="roll" id="roll" placeholder="Enter your Roll Number">
+			<button type="submit">Proceed</button>
+		</form>
+		{% if registrations %}
+		<table>
+			<thead>
+				<tr><th>S.No</th>
+					<th>Name</th>
+					<th>Roll Number</th>
+					<th>Year</th>
+					<th>Branch</th>
+					<th>Section</th>
+					<th>Email</th>
+					<th>Mobile Number</th>
+					<th>Event</th>
+					<th>Date</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for registration in registrations %}
+					<tr>
+						<td>{{ forloop.counter }}</td>
+						<td>{{ registration.username }}</td>
+						<td>{{ registration.roll_no }}</td>
+						<td>{{ registration.year }}</td>
+						<td>{{ registration.branch }}</td>
+						<td>{{ registration.section }}</td>
+						<td>{{ registration.roll_no}}@mits.ac.in</td>
+						<td>{{ registration.phone }}</td>
+						<td>{{ registration.event.name }}</td>
+						<td>{{ registration.Payment.created_at }}</td>
+						<td>{{ registration.Payment.status }}</td>
+					</tr>
+				{% empty %}
+					<tr>
+						<td colspan="9">No registrations found.</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %}

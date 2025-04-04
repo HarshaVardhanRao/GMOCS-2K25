@@ -8,6 +8,12 @@ from datetime import timedelta,datetime
 UPI_ID = "hvijapuram-3@okaxis"
 
 def index(request):
+    if request.method == "POST":
+        roll = request.POST.get("roll")
+        regs = registrations.objects.filter(roll_no = roll)
+        print("registrations",regs)
+        return render(request,'users.html',{'registrations':regs})
+
     return render(request, 'index.html')
 
 def event_list(request):
