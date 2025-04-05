@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Category, Events, registrations, PaymentTicket
 from .forms import RegistrationForm
 from datetime import timedelta,datetime
+import time
 
 UPI_ID = "hvijapuram-3@okaxis"
 
@@ -179,11 +180,8 @@ def deploy_view(request):
 
         try:
             # Pull the latest code
-            repo_path = "/home/GMOCS/GMOCS-2K25"
+            repo_path = "/home/gmocs/GMOCS-2K25/gmocs2k25"
             subprocess.run(["git", "-C", repo_path, "pull", "origin", "master"], check=True)
-
-            # Restart the app
-            subprocess.run(["touch", "/var/www/gmocs_pythonanywhere_com_wsgi.py"], check=True)
 
             return JsonResponse({"status": "Success", "message": "Deployment complete!"})
 
@@ -192,3 +190,6 @@ def deploy_view(request):
     return JsonResponse({"error": "Unexpected Error"}, status = 500)
 
 # Just Updated
+
+def hello(request):
+    return HttpResponse("<h1>Hello Developer</h1>")

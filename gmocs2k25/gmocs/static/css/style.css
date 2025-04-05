@@ -215,7 +215,7 @@ body {
 	animation: fadeIn 1s ease-out forwards 1s;
 	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 	letter-spacing: 0.1em;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -273,4 +273,47 @@ body {
 	.grid-overlay {
 		background-size: 30px 30px;
 	}
+
+	.anthem-button{
+		margin-bottom: 6rem;
+		white-space: nowrap;
+	}
 }
+
+/* Styling for the play anthem button */
+.anthem-button {
+	margin-top: 1rem;
+	position: absolute;
+	bottom: 2rem;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1000; /* Ensure it's above other elements */
+}
+
+#play-anthem {
+	padding: 1rem 3rem;
+	font-size: 1.5rem;
+	font-weight: 600;
+	background-color: var(--primary);  /* Primary color for the background */
+	color: white;
+	border: none;
+	border-radius: 50px; /* Rounded corners */
+	cursor: pointer;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+#play-anthem:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+	background-color: var(--secondary); /* Secondary color for the hover effect */
+}
+
+#play-anthem:focus {
+	outline: none;
+}
+
+#play-anthem:active {
+	transform: translateY(2px); /* Slight press effect */
+}
+

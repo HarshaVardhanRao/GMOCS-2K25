@@ -1,4 +1,4 @@
-    // Add parallax effect to title and content
+// Add parallax effect to title and content
 document.addEventListener("mousemove", (e) => {
 	const contentWrapper = document.querySelector(".content-wrapper");
 	const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
