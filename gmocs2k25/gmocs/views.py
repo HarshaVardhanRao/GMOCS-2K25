@@ -15,7 +15,7 @@ def index(request):
         print("registrations",regs)
         return render(request,'users.html',{'registrations':regs})
 
-    return render(request, 'index.html')
+    return render(request, 'home.html')
 
 def event_list(request):
     categories = Category.objects.all()
