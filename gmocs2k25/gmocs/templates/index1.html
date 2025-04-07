@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>GMOCS-2k25 | Technical Symposium</title>
+	<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+	
+	<!-- Font Awesome (for icons) -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+	<main class="hero">
+		<div class="grid-overlay"></div>
+		<div class="particles" id="particles"></div>
+		<div class="content-wrapper">
+			<h1 class="title">GMOCS</h1>
+			<p class="subtitle">Technical Symposium 2k25</p>
+			<p class="organizer">Organized by Dept of CSE - MITS</p>
+			<div class="coming-soon">30<sup>th</sup> April, 2025 </div>
+		</div>
+		<div class="anthem-button" style="z-index: 10000000000;">
+			<button id="play-anthem">
+				<!-- Use a Font Awesome icon for play/pause -->
+				<i id="anthem-icon" class="fas fa-play"></i>
+				Anthem 
+			</button>
+		</div>
+		<audio id="anthem-audio" src="{% static 'Anthem.mp3' %}" preload="auto"></audio>
+	</main>
+	
+	<script>
+		const playButton = document.getElementById('play-anthem');
+		const anthemAudio = document.getElementById('anthem-audio');
+		const anthemIcon = document.getElementById('anthem-icon');
+
+		playButton.addEventListener('click', function () {
+			if (anthemAudio.paused) {
+				anthemAudio.play();
+				anthemIcon.classList.remove('fa-play');
+				anthemIcon.classList.add('fa-pause'); // Change icon to pause
+			} else {
+				anthemAudio.pause();
+				anthemIcon.classList.remove('fa-pause');
+				anthemIcon.classList.add('fa-play'); // Change icon to play
+			}
+		});
+	</script>
+	<script type="module" src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>
