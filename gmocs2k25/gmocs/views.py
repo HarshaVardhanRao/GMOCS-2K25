@@ -9,7 +9,13 @@ import time
 UPI_ID = "hvijapuram-3@okaxis"
 
 def index(request):
-    return render(request, 'index.html')
+    if request.method == "POST":
+        roll = request.POST.get("roll")
+        regs = registrations.objects.filter(roll_no = roll)
+        print("registrations",regs)
+        return render(request,'users.html',{'registrations':regs})
+
+    return render(request, 'home.html')
 
 def event_list(request):
     categories = Category.objects.all()
