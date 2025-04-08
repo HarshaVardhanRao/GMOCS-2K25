@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: url("{% static 'mobile1.png' %}") no-repeat center center fixed;
+    background-size: cover;
+    color: #ffffff;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    background: rgba(0, 0, 0, 0.6); 
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.header {
+    text-align: center;
+}
+
+.logo {
+    width: 80px;
+    margin-bottom: 0.5rem;
+}
+
+h1 {
+    font-size: 2.2rem;
+    color: #fff;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-top: 0.25rem;
+}
+
+.info {
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.info h2 {
+    color: #ae7cff;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.info ul {
+    list-style: none;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.date {
+    font-size: 1.1rem;
+    color: #f5c542;
+    font-weight: bold;
+}
+
+.footer {
+    text-align: center;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    color: #ccc;
+}
+
+.social-icons {
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.social-icons i {
+    color: #ffffff;
+}
+
+/* Ensure compatibility for different screen sizes */
+@media only screen and (max-width: 768px) {
+    body {
+        padding: 0.5rem;
+    }
+
+    .container {
+        width: 90%;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .info h2 {
+        font-size: 1.2rem;
+    }
+
+    .info ul {
+        font-size: 0.9rem;
+    }
+
+    .date {
+        font-size: 1rem;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    body {
+        display: none; /* Hide the page on desktop screens */
+    }
+}
