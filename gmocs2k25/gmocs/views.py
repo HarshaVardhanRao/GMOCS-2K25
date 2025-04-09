@@ -19,6 +19,15 @@ def index(request):
 
     return render(request, 'index.html')
 
+def mobile_view(request):
+    if request.method == "POST":
+        roll = request.POST.get("roll")
+        regs = registrations.objects.filter(roll_no = roll)
+        print("registrations",regs)
+        return render(request,'users.html',{'registrations':regs})
+
+    return render(request, 'mobile.html')
+
 def event_list(request):
     categories = Category.objects.all()
     events = Events.objects.all()

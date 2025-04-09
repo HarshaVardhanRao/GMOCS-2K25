@@ -1,0 +1,319 @@
+/* Modern CSS Reset and Base Styles */
+:root {
+	--primary: #7c3aed;
+	--secondary: #4c1d95;
+	--text: #1f2937;
+	--background: #ffffff;
+	--accent: #ddd6fe;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Inter", system-ui, -apple-system, sans-serif;
+	background-color: var(--background);
+	color: var(--text);
+	line-height: 1.5;
+	overflow: hidden;
+}
+
+.hero {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 2rem;
+	position: relative;
+	perspective: 1000px;
+	background: linear-gradient(
+		125deg,
+		#4c1d95,
+		#7c3aed,
+		#2d00f7,
+		#3b82f6,
+		#059669,
+		#7c2d12,
+		#4c1d95
+	);
+	background-size: 300% 300%;
+	animation: gradientMove 15s ease-in-out infinite;
+}
+
+@keyframes gradientMove {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.hero::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(
+			circle at 0% 0%,
+			rgba(255, 255, 255, 0.3) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 100% 0%,
+			rgba(255, 255, 255, 0.3) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 100% 100%,
+			rgba(255, 255, 255, 0.3) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 0% 100%,
+			rgba(255, 255, 255, 0.3) 0%,
+			transparent 50%
+		);
+	animation: backgroundShift 15s ease-in-out infinite alternate;
+	mix-blend-mode: overlay;
+}
+
+@keyframes backgroundShift {
+	0% {
+		transform: scale(1) rotate(0deg);
+	}
+	100% {
+		transform: scale(1.2) rotate(5deg);
+	}
+}
+
+.grid-overlay {
+	position: absolute;
+	inset: 0;
+	background-image: linear-gradient(
+			rgba(255, 255, 255, 0.1) 1px,
+			/* Increased from 0.05 */ transparent 1px
+		),
+		linear-gradient(
+			90deg,
+			rgba(255, 255, 255, 0.1) 1px,
+			/* Increased from 0.05 */ transparent 1px
+		);
+	background-size: 50px 50px;
+	opacity: 0.7; /* Increased from 0.5 */
+	animation: gridMove 20s linear infinite;
+	pointer-events: none; /* Added to ensure smooth mouse tracking */
+}
+
+.grid-overlay::after {
+	content: "";
+	position: fixed;
+	left: var(--x);
+	top: var(--y);
+	width: 200px;
+	height: 200px;
+	background: radial-gradient(
+		circle,
+		rgba(255, 255, 255, 0.7) 0%,
+		rgba(255, 255, 255, 0.5) 20%,
+		rgba(255, 255, 255, 0.2) 50%,
+		transparent 70%
+	);
+	mix-blend-mode: overlay;
+	pointer-events: none;
+	transform: translate(-50%, -50%);
+	transition: all 0.05s ease;
+	z-index: 1;
+	opacity: 0;
+	filter: blur(5px);
+}
+
+.grid-overlay.active::after {
+	opacity: 1;
+}
+
+@keyframes gridMove {
+	0% {
+		transform: translateY(0);
+	}
+	100% {
+		transform: translateY(-50px);
+	}
+}
+
+.content-wrapper {
+	position: relative;
+	transform-style: preserve-3d;
+	animation: float 6s ease-in-out infinite;
+	z-index: 10;
+}
+
+@keyframes float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-20px);
+	}
+}
+
+.title {
+	font-size: clamp(4rem, 15vw, 12rem);
+	font-weight: 800;
+	color: white;
+	text-align: center;
+	margin-bottom: 1rem;
+	position: relative;
+	text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 8px 16px rgba(0, 0, 0, 0.1);
+	letter-spacing: 0.1em;
+	background: linear-gradient(to right, #ffffff, #ddd6fe);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.subtitle {
+	font-size: clamp(1.8rem, 5vw, 3rem);
+	color: var(--accent);
+	text-align: center;
+	margin-bottom: 0.5rem;  /* Reduced from 3rem */
+	opacity: 0;
+	animation: fadeIn 1s ease-out forwards 0.5s;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	letter-spacing: 0.05em;
+}
+
+.organizer {
+	font-size: clamp(1.2rem, 3vw, 1.8rem);
+	color: var(--accent);
+	text-align: center;
+	margin-bottom: 3rem;
+	opacity: 0;
+	animation: fadeIn 1s ease-out forwards 0.7s;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	letter-spacing: 0.05em;
+}
+
+.coming-soon {
+	font-size: clamp(1.4rem, 3.5vw, 2.5rem);
+	color: white;
+	text-align: center;
+	padding: 1.5rem 3rem;
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+	border-radius: 100px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	opacity: 0;
+	animation: fadeIn 1s ease-out forwards 1s;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+	letter-spacing: 0.1em;
+	/* text-transform: uppercase; */
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.coming-soon:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Floating particles */
+.particles {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.particle {
+	position: absolute;
+	width: 4px;
+	height: 4px;
+	background: rgba(255, 255, 255, 0.5);
+	border-radius: 50%;
+	animation: particleFloat 10s infinite linear;
+}
+
+@keyframes particleFloat {
+	0% {
+		transform: translateY(100vh) translateX(0);
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(-100vh) translateX(100px);
+		opacity: 0;
+	}
+}
+
+@media (max-width: 768px) {
+	.coming-soon {
+		padding: 1rem 2rem;
+	}
+
+	.grid-overlay {
+		background-size: 30px 30px;
+	}
+
+	.anthem-button{
+		margin-bottom: 6rem;
+		white-space: nowrap;
+	}
+}
+
+/* Styling for the play anthem button */
+.anthem-button {
+	margin-top: 1rem;
+	position: absolute;
+	bottom: 2rem;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1000; /* Ensure it's above other elements */
+}
+
+#play-anthem {
+	padding: 1rem 3rem;
+	font-size: 1.5rem;
+	font-weight: 600;
+	background-color: var(--primary);  /* Primary color for the background */
+	color: white;
+	border: none;
+	border-radius: 50px; /* Rounded corners */
+	cursor: pointer;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+#play-anthem:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+	background-color: var(--secondary); /* Secondary color for the hover effect */
+}
+
+#play-anthem:focus {
+	outline: none;
+}
+
+#play-anthem:active {
+	transform: translateY(2px); /* Slight press effect */
+}
+
