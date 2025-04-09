@@ -1,176 +1,276 @@
+/* Reset and Base Styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #1a1b2e url('mobile1.png') no-repeat center center fixed;
+  background-size: contain;
+  color: #ffffff;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Particles Background */
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: linear-gradient(135deg, rgba(26, 27, 46, 0.9) 0%, rgba(42, 43, 78, 0.9) 100%);
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Header Styles */
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-top: 20px;
+}
+
+.logo {
+  width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #a76dff 0%, #ff89e9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(167, 109, 255, 0.5);
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #8890b5;
+  letter-spacing: 1px;
+}
+
+/* Events Section */
+.events-section {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(167, 109, 255, 0.1);
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #a76dff;
+  text-align: center;
+}
+
+.event-types {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.event-type {
+  text-align: center;
+  padding: 20px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  flex: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(167, 109, 255, 0.2);
+}
+
+.event-type:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(167, 109, 255, 0.2);
+}
+
+.event-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #ff89e9;
+}
+
+/* Date Section */
+.date-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.date-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 30px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50px;
+  font-size: 1.2rem;
+  border: 1px solid rgba(167, 109, 255, 0.2);
+}
+
+.date-container i {
+  color: #ff89e9;
+}
+
+/* Countdown Section */
+.countdown-section {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 30px;
+  text-align: center;
+  border: 1px solid rgba(167, 109, 255, 0.2);
+}
+
+.countdown-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.countdown-item {
+  flex: 1;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 1px solid rgba(167, 109, 255, 0.2);
+}
+
+.countdown-item span {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #a76dff;
+  display: block;
+}
+
+.countdown-item label {
+  font-size: 0.8rem;
+  color: #8890b5;
+}
+
+/* Register Button */
+.register-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #a76dff 0%, #ff89e9 100%);
+  color: white;
+  text-decoration: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-weight: bold;
+  margin: 30px auto;
+  width: fit-content;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(167, 109, 255, 0.4);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 30px 0;
+  margin-top: auto;
+  border-top: 1px solid rgba(167, 109, 255, 0.1);
+}
+
+.footer-text {
+  color: #8890b5;
+  margin-bottom: 20px;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-link {
+  color: white;
+  font-size: 1.5rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-link:hover {
+  color: #ff89e9;
+  transform: scale(1.2);
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
   }
-  
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   body {
-    background: url("/static/mobile1.png") no-repeat center center fixed;
-    background-size: cover;
-    color: #ccc;
-    min-height: 100vh;
-    padding: 1rem;
-    position: relative;
-    overflow-x: hidden;
+    background-size: 80% auto;
+    background-position: center 70%;
   }
-  
-  #particles-js {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    top: 0;
-    left: 0;
-  }
-  
+
   .container {
-    display: flex;
+    padding: 15px;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .countdown-container {
+    flex-wrap: wrap;
+  }
+
+  .countdown-item {
+    flex: 1 1 calc(50% - 10px);
+  }
+
+  .event-types {
     flex-direction: column;
-    align-items: center;
-    gap: 1.2rem;
-    background: rgba(0, 0, 0, 0.6); 
-    padding: 1rem;
-    border-radius: 10px;
-    z-index: 1;
   }
-  
-  .header {
-    text-align: center;
+
+  .event-type {
+    margin-bottom: 15px;
   }
-  
-  h1 {
-    font-size: 2.2rem;
-    color: #fff;
-  }
-  
-  .subtitle {
-    font-size: 0.9rem;
-    color: #aaa;
-    margin-top: 0.25rem;
-  }
-  
-  .info {
-    text-align: center;
-    padding: 0.5rem;
-  }
-  
-  .info h2 {
-    color: #ae7cff;
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .info ul {
-    list-style: none;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .date {
-    font-size: 1.1rem;
-    color: #f5c542;
-    font-weight: bold;
-  }
-  
-  /* Register Button */
-  .register-btn {
-    display: inline-block;
-    margin-top: 0.8rem;
-    padding: 0.7rem 1.5rem;
-    background: linear-gradient(135deg, #a76dff, #ff89e9);
-    color: white;
-    font-weight: bold;
-    border-radius: 50px;
-    text-decoration: none;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    font-size: 1rem;
-  }
-  
-  .register-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(255, 153, 255, 0.6);
-  }
-  
-  /* Countdown */
-  .countdown, .schedule {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 12px;
-    backdrop-filter: blur(6px);
-  }
-  
-  #timer {
-    display: flex;
-    justify-content: center;
-    gap: 0.8rem;
-    font-size: 1.2rem;
-    margin-top: 0.6rem;
-  }
-  
-  #timer span {
-    background: rgba(0, 0, 0, 0.4);
-    padding: 0.4rem 0.7rem;
-    border-radius: 8px;
-    min-width: 50px;
-  }
-  
-  /* Schedule */
-  .schedule ul {
-    list-style: none;
-    margin-top: 0.5rem;
-    text-align: left;
-    padding-left: 0;
-  }
-  
-  .schedule li {
-    margin-bottom: 0.4rem;
-  }
-  
-  /* Footer */
+
   .footer {
-    text-align: center;
-    font-size: 0.8rem;
-    margin-top: 1rem;
-    color: #ccc;
+    margin-top: 20px;
+    padding: 20px 0;
   }
-  
-  .social-icons {
-    margin-top: 0.5rem;
-    font-size: 1.2rem;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-  }
-  
-  .social-icons i {
-    color: #ffffff;
-  }
-  
-  /* Responsive */
-  @media only screen and (max-width: 768px) {
-    body {
-      padding: 0.5rem;
-    }
-  
-    .container {
-      width: 90%;
-    }
-  
-    h1 {
-      font-size: 1.8rem;
-    }
-  
-    .info h2 {
-      font-size: 1.2rem;
-    }
-  
-    .info ul {
-      font-size: 0.9rem;
-    }
-  
-    .date {
-      font-size: 1rem;
-    }
-  }  
+}
