@@ -14,7 +14,7 @@
   <div class="container">
     <!-- Header Section -->
     <header class="header">
-      <img src="{% static 'mits_nav.png' %}" alt="MITS Logo" class="logo">
+      <img src="{% static 'img/mits_nav.png' %}" alt="MITS Logo" class="logo">
       <h1 class="title">GMOCS</h1>
       <p class="subtitle">DEPT. OF COMPUTER SCIENCE & ENGINEERING</p>
     </header>
@@ -52,18 +52,14 @@
     <!-- Events Section -->
     <section class="events-section">
       <h2 class="section-title">EVENTS</h2>
-      <div class="event-types">
-        <div class="event-type technical">
-          <div class="event-icon">
-            <i class="fas fa-code"></i>
-          </div>
-          <span>Technical</span>
+      <div class="events-container">
+        <div class="event-item">
+          <i class="fas fa-code"></i>
+          <label>Technical</label>
         </div>
-        <div class="event-type non-technical">
-          <div class="event-icon">
-            <i class="fas fa-gamepad"></i>
-          </div>
-          <span>Non-Technical</span>
+        <div class="event-item">
+          <i class="fas fa-gamepad"></i>
+          <label>Non-Technical</label>
         </div>
       </div>
     </section>
