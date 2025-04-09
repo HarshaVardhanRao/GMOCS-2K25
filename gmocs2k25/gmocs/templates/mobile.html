@@ -2,68 +2,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GMOCS | MITS</title>
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="{% static 'css/mobile.css' %}">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-  <!-- Particles Background -->
   <div id="particles-js"></div>
-
-  <main class="container">
+  
+  <div class="container">
+    <!-- Header Section -->
     <header class="header">
-      <h1>GMOCS</h1>
-      <p class="subtitle">Dept. of Computer Science & Engineering</p>
+      <img src="{% static 'img/mits_nav.png' %}" alt="MITS Logo" class="logo">
+      <h1 class="title">GMOCS</h1>
+      <p class="subtitle">DEPT. OF COMPUTER SCIENCE & ENGINEERING</p>
     </header>
-
-    <section class="info">
-      <h2>EVENTS</h2>
-      <ul>
-        <li>Technical</li>
-        <li>Non-Technical</li>
-      </ul>
-      <p class="date">📅 30th April</p>
-
-      <a href="https://your-registration-link.com" class="register-btn" target="_blank">🎟️ Register Now</a>
-    </section>
-
-    <section class="countdown slide-up">
-      <h3>Countdown to GMOCS</h3>
-      <div id="timer">
-        <span><strong id="days">00</strong>d</span>
-        <span><strong id="hours">00</strong>h</span>
-        <span><strong id="minutes">00</strong>m</span>
-        <span><strong id="seconds">00</strong>s</span>
+    <!-- Date Section -->
+    <section class="date-section">
+      <div class="date-container">
+        <i class="fas fa-calendar-alt"></i>
+        <span class="date">30TH APRIL</span>
       </div>
     </section>
 
-    <section class="schedule fade-in">
-      <h3>📅 Event Schedule</h3>
-      <ul>
-        <li><strong>10:00 AM</strong> - Inauguration</li>
-        <li><strong>11:00 AM</strong> - Tech Talks</li>
-        <li><strong>1:00 PM</strong> - Coding Contest</li>
-        <li><strong>3:00 PM</strong> - Gaming / Fun Events</li>
-        <li><strong>5:00 PM</strong> - Prize Distribution</li>
-      </ul>
+    <!-- Countdown Section -->
+    <section class="countdown-section">
+      <h3>Time Remaining</h3>
+      <div class="countdown-container">
+        <div class="countdown-item">
+          <span id="days">00</span>
+          <label>Days</label>
+        </div>
+        <div class="countdown-item">
+          <span id="hours">00</span>
+          <label>Hours</label>
+        </div>
+        <div class="countdown-item">
+          <span id="minutes">00</span>
+          <label>Minutes</label>
+        </div>
+        <div class="countdown-item">
+          <span id="seconds">00</span>
+          <label>Seconds</label>
+        </div>
+      </div>
     </section>
 
+    <!-- Events Section -->
+    <section class="events-section">
+      <h2 class="section-title">EVENTS</h2>
+      <div class="events-container">
+        <div class="event-item">
+          <i class="fas fa-code"></i>
+          <label>Technical</label>
+        </div>
+        <div class="event-item">
+          <i class="fas fa-gamepad"></i>
+          <label>Non-Technical</label>
+        </div>
+      </div>
+    </section>
+    <!-- Register Button
+    <a href="events.html" class="register-btn">
+      <span>Register Now</span>
+      <i class="fas fa-arrow-right"></i>
+    </a> -->
+
+    <!-- Footer -->
     <footer class="footer">
-      <p>ONE DAY NATIONAL LEVEL TECHNICAL SYMPOSIUM</p>
-      <div class="social-icons">
-        <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://wa.me/1234567890" target="_blank"><i class="fab fa-whatsapp"></i></a>
-        <a href="tel:+1234567890"><i class="fas fa-mobile-alt"></i></a>
-        <a href="https://www.google.com/maps" target="_blank"><i class="fas fa-map-marker-alt"></i></a>
+      <p class="footer-text">ONE DAY NATIONAL LEVEL TECHNICAL SYMPOSIUM</p>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" class="social-link"><i class="fas fa-phone"></i></a>
+        <a href="#" class="social-link"><i class="fas fa-map-marker-alt"></i></a>
       </div>
     </footer>
-  </main>
+  </div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script src="{% static 'js/mobile.js' %}"></script>
 </body>
 </html>
