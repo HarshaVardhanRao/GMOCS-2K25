@@ -7,7 +7,7 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: #1a1b2e url('mobile1.png') no-repeat center center fixed;
+  background: #1a1b2e url('/static/mobile1.png') no-repeat center center fixed;
   background-size: contain;
   color: #ffffff;
   min-height: 100vh;
