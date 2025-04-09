@@ -60,11 +60,12 @@ class registrations(models.Model):
     username = models.CharField(max_length=100)
     roll_no = models.CharField(max_length=20)
     phone = models.CharField(max_length=20)
-    year = models.IntegerField()
     branch = models.CharField(max_length=20)
-    section = models.CharField(max_length=20)
     event = models.ForeignKey(Events, on_delete=models.CASCADE)
-    Payment = models.ForeignKey(PaymentTicket, on_delete=models.CASCADE,related_name='payment', blank=True, null=True)
+    utr = models.CharField(max_length=20)
+    STATUS_CHOICES = {"Pending":"Pending", "Rejected":"Rejected", "Approved":"Approved"}
+    status = models.CharField(choices=STATUS_CHOICES, max_length=15, default="Pending")
+    members = models.JSONField(default=list)
 
     def __str__(self):
         return f"{self.username} - {self.event.name}"

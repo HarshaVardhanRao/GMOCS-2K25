@@ -5,6 +5,8 @@ from .models import Category, Events, registrations, PaymentTicket
 from .forms import RegistrationForm
 from datetime import timedelta,datetime
 import time
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 UPI_ID = "hvijapuram-3@okaxis"
 
@@ -22,33 +24,28 @@ def event_list(request):
     events = Events.objects.all()
     return render(request, 'events.html', {'categories': categories, 'events': events})
 
-def register_event(request, event_id):
-    event = get_object_or_404(Events, id=event_id)
+@csrf_exempt
+def register_event(request):
+    
 
     if request.method == "POST":
-        form = RegistrationForm(request.POST)
-        event = get_object_or_404(Events, id=event_id)
-        if form.is_valid():
-            form.instance.event = event
-            # user = form.save()
+        print(request.body)
+        data = json.loads(request.body)
+        {'name': 'V Mahesh Kumar', 'mobile': '9398983918', 'rollno': '22691A05B5', 'branch': 'CSE', 'members': [], 'college': 'MITS', 'eventName': 'Movie Mania', 'teamSize': 1, 'utr': '2345908978'}
+        print(data)
+        new_registration = registrations()
+        new_registration.username = data['name']
+        new_registration.roll_no = data['rollno']
+        new_registration.phone = data['mobile']
+        new_registration.branch = data['branch']
+        new_registration.event = Events.objects.filter(id=data['eventId'])[0]
+        new_registration.members = data['members']
+        new_registration.utr = data['utr']
+        print(new_registration)
+        new_registration.save()
+        return JsonResponse(json.dumps(data), safe=False)
 
-            payment_ticket = PaymentTicket.objects.create(
-                amount=event.price,
-                expires_at=timezone.now() + timedelta(hours=24)
-            )
-
-            payment_ticket.generate_qr(UPI_ID)
-
-            form.instance.Payment = payment_ticket
-            registration = form.save()
-            # registrations.objects.create(event=event, Payment=payment_ticket)
-
-            return redirect('ticket_detail', ticket_id=payment_ticket.ticket_id)
-
-    else:
-        form = RegistrationForm()
-
-    return render(request, 'register_event.html', {'form': form, 'event': event})
+    return JsonResponse({"message": "GET Method"})
 
 @login_required
 def registration_list(request):
