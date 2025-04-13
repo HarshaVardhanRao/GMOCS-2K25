@@ -1,10 +1,12 @@
 from django.utils import timezone
-from django.shortcuts import render, redirect, get_object_or_404,HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Category, Events, registrations, PaymentTicket
 from .forms import RegistrationForm
 from datetime import timedelta,datetime
 import time
+import csv
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -32,6 +34,9 @@ def event_list(request):
     categories = Category.objects.all()
     events = Events.objects.all()
     return render(request, 'events.html', {'categories': categories, 'events': events})
+
+def committee(request):
+    return render(request, 'committee.html')
 
 @csrf_exempt
 def register_event(request):
