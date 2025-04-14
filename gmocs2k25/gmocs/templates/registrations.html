@@ -4,21 +4,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrations</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
+
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 40px;
+                background: #fefefe;
+                color: #333;
+            }
         
+            h1 {
+                text-align: center;
+                color: #4a4a4a;
+                margin-bottom: 20px;
+            }
+            form {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 16px;
+                align-items: center;
+                margin: 20px 0;
+                background-color: #f7f9fc;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            }
+            
+            form label {
+                font-weight: 600;
+                color: #333;
+            }
+            
+            form input[type="date"],
+            form select {
+                padding: 8px 12px;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                background-color: #fff;
+                color: #333;
+                min-width: 180px;
+            }
+            
+            form button {
+                background: linear-gradient(to right, #667eea, #764ba2);
+                color: white;
+                border: none;
+                padding: 10px 16px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: background 0.3s ease;
+            }
+            
+            form button:hover {
+                background: linear-gradient(to right, #5a67d8, #6b46c1);
+            }
+            
+        
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 25px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+        
+            th, td {
+                padding: 14px 16px;
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+        
+            th {
+                background: linear-gradient(to right, #667eea, #764ba2);
+                color: white;
+                font-weight: bold;
+            }
+        
+            td {
+                background-color: #fff;
+            }
+        
+            tr:nth-child(even) td {
+                background-color: #f9f9f9;
+            }
+        
+            tr:hover td {
+                background-color: #f1f7ff;
+            }
+        
+            /* Status Colors */
+            .status-approved {
+                background-color: #d4edda;
+                color: #155724;
+                font-weight: bold;
+            }
+        
+            .status-pending {
+                background-color: #fff3cd;
+                color: #856404;
+                font-weight: bold;
+            }
+        
+            .status-rejected {
+                background-color: #f8d7da;
+                color: #721c24;
+                font-weight: bold;
+            }
+        
+            select.status-dropdown {
+                padding: 5px 10px;
+                font-size: 14px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+            }
     </style>
 </head>
 <body>
@@ -26,37 +125,27 @@
 
     <!-- Filter Form -->
     <form method="get" action="">
-        <!-- Search by Date -->
-         {% if request.user.is_superuser %}
+        {% if request.user.is_superuser %}
         <label for="search_date">Search by Date:</label>
-        <input type="date" id="search_date" name="search_date" 
-               value="{{ search_date }}">
+        <input type="date" id="search_date" name="search_date" value="{{ search_date }}">
 
-        <!-- Filter by Category -->
-        <label for="category">Category:</label>
+        {% comment %} <label for="category">Category:</label>
         <select id="category" name="category">
             <option value="">All Categories</option>
             {% for category in categories %}
-                <option value="{{ category.id }}" 
-                        {% if category.id == selected_category %}selected{% endif %}>
-                    {{ category.name }}
-                </option>
+                <option value="{{ category.id }}" {% if category.id == selected_category %}selected{% endif %}>{{ category.name }}</option>
             {% endfor %}
-        </select>
+        </select> {% endcomment %}
+
         <label for="event">Event:</label>
         <select name="event" id="event">
             <option value="">All Events</option>
             {% for event in events %}
-                <option value="{{ event.id }}" 
-                        {% if event.id == selected_event %}selected{% endif %}>
-                    {{ event.name }}
-                </option>
+                <option value="{{ event.id }}" {% if event.id == selected_event %}selected{% endif %}>{{ event.name }}</option>
             {% endfor %}
         </select>
 
-        <!-- Submit Button -->
         <button type="submit">Filter</button>
-        <!-- Download Button -->
         <button type="submit" name="download" value="true">Download CSV</button>
         {% endif %}
     </form>
@@ -64,40 +153,58 @@
     <!-- Registrations Table -->
     <table>
         <thead>
-            <tr><th>S.No</th>
-                <th>Name</th>
+            <tr>
+                <th>S.No</th>
+                <th>Username</th>
                 <th>Roll Number</th>
-                <th>Year</th>
+                <th>Phone</th>
                 <th>Branch</th>
-                <th>Section</th>
-                <th>Email</th>
-                <th>Mobile Number</th>
                 <th>Event</th>
-                <th>Date</th>
+                <th>UTR</th>
                 <th>Status</th>
+                <th>Members</th>
             </tr>
         </thead>
-        <tbody>
-            {% for registration in registrations %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ registration.username }}</td>
-                    <td>{{ registration.roll_no }}</td>
-                    <td>{{ registration.year }}</td>
-                    <td>{{ registration.branch }}</td>
-                    <td>{{ registration.section }}</td>
-                    <td>{{ registration.roll_no}}@mits.ac.in</td>
-                    <td>{{ registration.phone }}</td>
-                    <td>{{ registration.event.name }}</td>
-                    <td>{{ registration.Payment.created_at }}</td>
-                    <td>{{ registration.Payment.status }}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="9">No registrations found.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
+            <tbody>
+                {% for registration in registrations %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ registration.username }}</td>
+                        <td>{{ registration.roll_no }}</td>
+                        <td>{{ registration.phone }}</td>
+                        <td>{{ registration.branch }}</td>
+                        <td>{{ registration.event.name }}</td>
+                        <td>{{ registration.utr }}</td>
+                        <td>
+                            <form method="post" action="{% url 'update_registration_status' registration.id %}">
+                                {% csrf_token %}
+                                <select name="status" class="status-dropdown 
+                                    {% if registration.status == 'Approved' %}status-approved
+                                    {% elif registration.status == 'Pending' %}status-pending
+                                    {% elif registration.status == 'Rejected' %}status-rejected
+                                    {% endif %}"
+                                    onchange="this.form.submit()">
+                                    <option value="Pending" {% if registration.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                    <option value="Approved" {% if registration.status == 'Approved' %}selected{% endif %}>Approved</option>
+                                    <option value="Rejected" {% if registration.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td>
+                            {% if registration.members %}
+                                {{ registration.members|join:", " }}
+                            {% else %}
+                                None
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="9">No registrations found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
     </table>
 </body>
 </html>

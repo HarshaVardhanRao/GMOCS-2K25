@@ -67,7 +67,7 @@ def registration_list(request):
     # Get the search parameters
         search_date = request.GET.get('search_date')
         print(search_date)
-        category_id = request.GET.get('category')  # Get the category from the query parameters
+        event_id = request.GET.get('event')  # Get the category from the query parameters
         if search_date == '':
             search_date = None
         # Retrieve all registrations by default
@@ -82,8 +82,8 @@ def registration_list(request):
                 pass
 
         # Filter registrations by category if provided
-        if category_id:
-            regs = regs.filter(event__category_id=category_id)
+        if event_id:
+            regs = regs.filter(event__id=event_id)
 
         # Handle CSV download
         if "download" in request.GET:
@@ -99,14 +99,14 @@ def registration_list(request):
                 ])
             return response
 
-        # Retrieve all categories for the filter dropdown
-        categories = Category.objects.all()
+        # Retrieve all categories for the filter dropdown\
+        events = Events.objects.all()
 
         context = {
             'registrations': regs,
             'search_date': search_date,
-            'categories': categories,
-            'selected_category': category_id,
+            'selected_event': event_id,
+            'events': events,
         }
         return render(request, 'registrations.html', context)
     elif request.user.is_authenticated:
@@ -204,3 +204,43 @@ def deploy_view(request):
 
 def hello(request):
     return HttpResponse("<h1>Hello Developer</h1>")
+
+from django.shortcuts import redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+from django.contrib import messages
+from .models import registrations
+
+@require_POST
+def update_registration_status(request, registration_id):
+    registration = get_object_or_404(registrations, id=registration_id)
+    new_status = request.POST.get('status')
+
+    if new_status in ["Pending", "Approved", "Rejected"]:
+        registration.status = new_status
+        registration.save()
+        messages.success(request, f"Status updated to {new_status}")
+    else:
+        messages.error(request, "Invalid status selected.")
+
+    return redirect(request.META.get('HTTP_REFERER', 'registrations'))
+
+@login_required
+def registration_dashboard(request):
+    if not request.user.is_superuser:
+        return redirect('login')
+    data = registrations.objects.select_related('event__Category').all()
+    reg_list = [
+        {
+            "username": r.username,
+            "roll_no": r.roll_no,
+            "phone": r.phone,
+            "branch": r.branch,
+            "utr": r.utr,
+            "status": r.status,
+            "event": r.event.name,
+            "category": r.event.Category.name,  # <<-- Category name from FK
+        }
+        for r in data
+    ]
+    return render(request, "dashboard.html", {"registration_data": reg_list})
+

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <style>
+    body { font-family: sans-serif; background: #f4f6ff; margin: 0; padding: 20px; }
+    h1 { text-align: center; color: #2b2d42; }
+    .stats, .legend { display: flex; justify-content: center; gap: 20px; margin: 20px 0; flex-wrap: wrap; }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      min-width: 200px;
+      flex: 1;
+      text-align: center;
+    }
+    .card h2 { margin: 10px 0; }
+    .bar-chart, .event-table {
+      max-width: 900px;
+      margin: 30px auto;
+    }
+    .bar-group {
+      display: flex;
+      align-items: flex-end;
+      gap: 15px;
+      margin: 10px 0;
+    }
+    .bar {
+      flex: 1;
+      text-align: center;
+      border-radius: 8px;
+      color: white;
+      padding: 5px 0;
+      transition: 0.3s;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    th { background: #2b2d42; color: white; }
+    .circle { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+  </style>
+</head>
+<body>
+
+  <h1>Registration Dashboard</h1>
+
+  <div class="stats" id="categoryStats"></div>
+
+  <div class="event-table" id="eventTable"></div>
+
+  <div class="bar-chart" id="eventChart"></div>
+
+  <div class="legend">
+    <span><span class="circle" style="background:#38b000;"></span> Approved</span>
+    <span><span class="circle" style="background:#ffba08;"></span> Pending</span>
+    <span><span class="circle" style="background:#d00000;"></span> Rejected</span>
+  </div>
+
+  <script>
+    const registrations = {{ registration_data|safe }};
+
+    const categoryStats = {
+      "Technical": { Approved: 0, Pending: 0 },
+      "Non-Technical": { Approved: 0, Pending: 0 }
+    };
+
+    const eventStats = {};
+
+    registrations.forEach(reg => {
+      const { category, event, status } = reg;
+
+      if (status !== "Rejected") {
+        if (categoryStats[category]) {
+          categoryStats[category][status]++;
+        }
+      }
+
+      if (!eventStats[event]) {
+        eventStats[event] = { Approved: 0, Pending: 0, Rejected: 0 };
+      }
+      eventStats[event][status]++;
+    });
+
+    // Category Cards
+    const categorySection = document.getElementById("categoryStats");
+    for (let cat in categoryStats) {
+      const total = categoryStats[cat].Approved + categoryStats[cat].Pending;
+      categorySection.innerHTML += `
+        <div class="card" style="border-left: 5px solid ${cat === 'Technical' ? '#0077b6' : '#f77f00'}">
+          <h2>${total}</h2>
+          <p>${cat} Registrations</p>
+          <p style="color:#38b000">Approved: ${categoryStats[cat].Approved}</p>
+          <p style="color:#ffba08">Pending: ${categoryStats[cat].Pending}</p>
+        </div>
+      `;
+    }
+
+    // Event Table
+    const table = document.getElementById("eventTable");
+    let html = `<table><tr><th>Event</th><th>Approved</th><th>Pending</th><th>Total</th></tr>`;
+    for (let evt in eventStats) {
+      const e = eventStats[evt];
+      const total = e.Approved + e.Pending;
+      if (total > 0) {
+        html += `<tr><td>${evt}</td><td>${e.Approved}</td><td>${e.Pending}</td><td>${total}</td></tr>`;
+      }
+    }
+    html += `</table>`;
+    table.innerHTML = html;
+
+    // Bar Chart
+    const chart = document.getElementById("eventChart");
+    for (let evt in eventStats) {
+      const e = eventStats[evt];
+      const max = Math.max(e.Approved, e.Pending, e.Rejected);
+      if (max === 0) continue;
+      chart.innerHTML += `
+        <h3 style="text-align:center;">${evt}</h3>
+        <div class="bar-group">
+          <div class="bar" style="height:${(e.Approved/max)*100}px; background:#38b000;">${e.Approved}</div>
+          <div class="bar" style="height:${(e.Pending/max)*100}px; background:#ffba08;">${e.Pending}</div>
+          <div class="bar" style="height:${(e.Rejected/max)*100}px; background:#d00000;">${e.Rejected}</div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

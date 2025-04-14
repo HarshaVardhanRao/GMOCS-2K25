@@ -65,7 +65,7 @@ class registrations(models.Model):
     utr = models.CharField(max_length=20)
     STATUS_CHOICES = {"Pending":"Pending", "Rejected":"Rejected", "Approved":"Approved"}
     status = models.CharField(choices=STATUS_CHOICES, max_length=15, default="Pending")
-    members = models.JSONField(default=list)
+    members = models.JSONField(default=list,null=True, blank=True)
 
     def __str__(self):
         return f"{self.username} - {self.event.name}"
