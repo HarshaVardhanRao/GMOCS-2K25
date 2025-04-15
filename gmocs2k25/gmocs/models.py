@@ -68,7 +68,7 @@ class registrations(models.Model):
     members = models.JSONField(default=list,null=True, blank=True)
     college = models.CharField(max_length=100, default="MITS")
     PARTICIPATION_MODE_CHOICES = {"Online": "Online", "Offline": "Offline"}
-    participation_mode = models.CharField(choices=PARTICIPATION_MODE_CHOICES, max_length=10, default="Online")
+    participation_mode = models.CharField(choices=PARTICIPATION_MODE_CHOICES, max_length=10, default="Offline")
 
     def __str__(self):
         return f"{self.username} - {self.event.name}"
