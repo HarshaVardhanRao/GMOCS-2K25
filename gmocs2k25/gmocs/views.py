@@ -53,6 +53,9 @@ def register_event(request):
         new_registration.phone = data['mobile']
         new_registration.branch = data['branch']
         new_registration.event = Events.objects.filter(id=data['eventId'])[0]
+        new_registration.college = data['college']
+        if data['modeOfAttendance']:
+            new_registration.participation_mode = data['modeOfAttendance']
         new_registration.members = data['members']
         new_registration.utr = data['utr']
         print(new_registration)
