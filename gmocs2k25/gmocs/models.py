@@ -67,7 +67,7 @@ class registrations(models.Model):
     status = models.CharField(choices=STATUS_CHOICES, max_length=15, default="Pending")
     members = models.JSONField(default=list,null=True, blank=True)
     college = models.CharField(max_length=100, default="MITS")
-    PARTICIPATION_MODE_CHOICES = {"Online": "Online", "Offline": "Offline"}
+    PARTICIPATION_MODE_CHOICES = {"Online": "Online", "Offline": "Offline", "Freefire": "Freefire", "BGMI": "BGMI", "Ludo": "Ludo"}
     participation_mode = models.CharField(choices=PARTICIPATION_MODE_CHOICES, max_length=10, default="Offline")
 
     def __str__(self):
