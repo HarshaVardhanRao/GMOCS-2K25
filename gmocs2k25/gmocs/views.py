@@ -247,3 +247,15 @@ def registration_dashboard(request):
     ]
     return render(request, "dashboard.html", {"registration_data": reg_list})
 
+@login_required
+def event_registrations(request):
+    event = Events.objects.get(coordinator=request.user.id)
+    regs = registrations.objects.filter(event=event).exclude(status="Rejected")
+    intenal = regs.filter(college="MITS").count()
+    external = regs.exclude(college="MITS").count()
+    total = regs.count()
+    print("Internal", intenal)
+    print("External", external)
+    print("Total", total)
+    print("Registrations", regs)
+    return render(request, 'event_registrations.html', {'regs': regs, 'Internal': intenal, 'External': external, 'Total': total})

@@ -16,6 +16,7 @@ urlpatterns = [
     path("hello", views.hello, name="hello"),
     path('update-status/<int:registration_id>/', views.update_registration_status, name='update_registration_status'),
     path('dashboard', views.registration_dashboard, name='dashboard'),
+    path('eventdashboard/', views.event_registrations, name='eventdashboard'),
 ]
 from django.conf import settings
 from django.conf.urls.static import static
