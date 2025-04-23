@@ -176,10 +176,10 @@
                         <td>{{ registration.event.name }}</td>
                         <td>{{ registration.utr }}</td>
                         <td>
+                            {% if request.user.is_superuser %}
                             <form method="post" action="{% url 'update_registration_status' registration.id %}">
                                 {% csrf_token %}
                                 <select name="status" class="status-dropdown  
-                                    {% if not request.user.is_superuser %}disabled{% endif %}
                                     {% if registration.status == 'Approved' %}status-approved
                                     {% elif registration.status == 'Pending' %}status-pending
                                     {% elif registration.status == 'Rejected' %}status-rejected
@@ -190,6 +190,9 @@
                                     <option value="Rejected" {% if registration.status == 'Rejected' %}selected{% endif %}>Rejected</option>
                                 </select>
                             </form>
+                            {% else %}
+                                <span class="status-{{ registration.status|lower }}">{{ registration.status }}</span>
+                            {% endif %}
                         </td>
                         <td>
                             {% if registration.members %}

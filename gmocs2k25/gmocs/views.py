@@ -437,7 +437,7 @@ def approved_registration_list(request):
 
 @login_required
 def total_amount_view(request):
-    regs = registrations.objects.all()
+    regs = registrations.objects.filter(status="Approved")
     total_amount = 0
     event_totals = {}
 
