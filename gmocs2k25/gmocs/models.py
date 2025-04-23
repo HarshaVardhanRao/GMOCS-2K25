@@ -63,11 +63,11 @@ class registrations(models.Model):
     branch = models.CharField(max_length=20)
     event = models.ForeignKey(Events, on_delete=models.CASCADE)
     utr = models.CharField(max_length=20,unique=True)
-    STATUS_CHOICES = {"Pending":"Pending", "Rejected":"Rejected", "Approved":"Approved"}
+    STATUS_CHOICES = [("Pending", "Pending"), ("Rejected", "Rejected"), ("Approved","Approved")]
     status = models.CharField(choices=STATUS_CHOICES, max_length=15, default="Pending")
     members = models.JSONField(default=list,null=True, blank=True)
     college = models.CharField(max_length=100, default="MITS")
-    PARTICIPATION_MODE_CHOICES = {"Online": "Online", "Offline": "Offline", "Freefire": "Freefire", "BGMI": "BGMI", "Ludo": "Ludo"}
+    PARTICIPATION_MODE_CHOICES = [("Online", "Online"), ("Offline", "Offline"), ("Freefire", "Freefire"), ("BGMI", "BGMI"), ("Ludo", "Ludo")]
     participation_mode = models.CharField(choices=PARTICIPATION_MODE_CHOICES, max_length=10, default="Offline")
 
     def __str__(self):

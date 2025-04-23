@@ -9,6 +9,7 @@ import time
 import csv
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.db import IntegrityError
 
 UPI_ID = "hvijapuram-3@okaxis"
 
@@ -40,27 +41,30 @@ def committee(request):
 
 @csrf_exempt
 def register_event(request):
-    
-
     if request.method == "POST":
-        print(request.body)
-        data = json.loads(request.body)
-        {'name': 'V Mahesh Kumar', 'mobile': '9398983918', 'rollno': '22691A05B5', 'branch': 'CSE', 'members': [], 'college': 'MITS', 'eventName': 'Movie Mania', 'teamSize': 1, 'utr': '2345908978'}
-        print(data)
-        new_registration = registrations()
-        new_registration.username = data['name']
-        new_registration.roll_no = data['rollno']
-        new_registration.phone = data['mobile']
-        new_registration.branch = data['branch']
-        new_registration.event = Events.objects.filter(id=data['eventId'])[0]
-        new_registration.college = data['college']
-        if data['modeOfAttendance']:
-            new_registration.participation_mode = data['modeOfAttendance']
-        new_registration.members = data['members']
-        new_registration.utr = data['utr']
-        print(new_registration)
-        new_registration.save()
-        return JsonResponse(json.dumps(data), safe=False)
+        try:
+            print(request.body)
+            data = json.loads(request.body)
+            {'name': 'V Mahesh Kumar', 'mobile': '9398983918', 'rollno': '22691A05B5', 'branch': 'CSE', 'members': [], 'college': 'MITS', 'eventName': 'Movie Mania', 'teamSize': 1, 'utr': '2345908978'}
+            print(data)
+            new_registration = registrations()
+            new_registration.username = data['name']
+            new_registration.roll_no = data['rollno']
+            new_registration.phone = data['mobile']
+            new_registration.branch = data['branch']
+            new_registration.event = Events.objects.filter(id=data['eventId'])[0]
+            new_registration.college = data['college']
+            if data['modeOfAttendance']:
+                new_registration.participation_mode = data['modeOfAttendance']
+            new_registration.members = data['members']
+            new_registration.utr = data['utr']
+            print(new_registration)
+            new_registration.save()
+            print("saved")
+            return JsonResponse({"message": "Registred Successfully"}, safe=False)
+        except IntegrityError:
+            print("error")
+            return JsonResponse({"message": "You can't cheat me.......UTR already exists"})
 
     return JsonResponse({"message": "GET Method"})
 
