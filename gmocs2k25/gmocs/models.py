@@ -62,7 +62,7 @@ class registrations(models.Model):
     phone = models.CharField(max_length=20)
     branch = models.CharField(max_length=20)
     event = models.ForeignKey(Events, on_delete=models.CASCADE)
-    utr = models.CharField(max_length=20)
+    utr = models.CharField(max_length=20,unique=True)
     STATUS_CHOICES = {"Pending":"Pending", "Rejected":"Rejected", "Approved":"Approved"}
     status = models.CharField(choices=STATUS_CHOICES, max_length=15, default="Pending")
     members = models.JSONField(default=list,null=True, blank=True)

@@ -247,3 +247,5 @@ def registration_dashboard(request):
     ]
     return render(request, "dashboard.html", {"registration_data": reg_list})
 
+def event_detail(request,event_id):
+    return render(request,'index.html',{"event_id":event_id})
