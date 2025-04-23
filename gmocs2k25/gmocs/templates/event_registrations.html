@@ -132,6 +132,9 @@
             <th>Name</th>
             <th>Registration Date</th>
             <th>Members</th>
+            {% if event.name == 'Ideathon' or event.name == 'Paper Presentation' or event.name == 'E - Sports' %}
+            <th>Participation Mode</th>
+            {% endif %}
             <th>Phone No</th>
             <th>College</th>
         </tr>
@@ -148,6 +151,11 @@
                     N/A
                 {% endif %}
             </td>
+            {% if reg.event.name == 'Ideathon' or reg.event.name == 'Paper Presentation' or reg.event.name == 'E - Sports' %}
+            <td>{{ reg.participation_mode }}</td>
+            <!-- {% else %}
+            <td>N/A</td> -->
+            {% endif %}
             <td>{{ reg.phone }}</td>
             <td>{{ reg.college }}</td>
         </tr>

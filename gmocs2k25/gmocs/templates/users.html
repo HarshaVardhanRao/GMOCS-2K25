@@ -16,6 +16,7 @@
 					<th>Email</th>
 					<th>Mobile Number</th>
 					<th>Event</th>
+					<th>Participation Mode</th>
 					<th>Date</th>
 					<th>Status</th>
 				</tr>
@@ -32,6 +33,7 @@
 						<td>{{ registration.roll_no}}@mits.ac.in</td>
 						<td>{{ registration.phone }}</td>
 						<td>{{ registration.event.name }}</td>
+						<td>{{ registration.participation_mode }}</td>
 						<td>{{ registration.Payment.created_at }}</td>
 						<td>{{ registration.Payment.status }}</td>
 					</tr>
