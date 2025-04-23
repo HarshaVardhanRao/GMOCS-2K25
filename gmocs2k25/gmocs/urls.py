@@ -21,6 +21,7 @@ urlpatterns = [
     path('dashboard', views.registration_dashboard, name='dashboard'),
     path('eventdashboard/', views.event_registrations, name='eventdashboard'),
     path('events/<int:event_id>/', views.event_detail, name='event_detail'),
+    path('amount/', views.total_amount_view, name='total_amount'),
 ]
 from django.conf import settings
 from django.conf.urls.static import static

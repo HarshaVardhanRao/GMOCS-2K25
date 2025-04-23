@@ -434,3 +434,49 @@ def approved_registration_list(request):
         return render(request, 'registrations.html', {'registrations': regs})
     else:
         return redirect('login')
+
+@login_required
+def total_amount_view(request):
+    regs = registrations.objects.all()
+    total_amount = 0
+    event_totals = {}
+
+    for reg in regs:
+        team_size = len(reg.members) + 1 if reg.members else 1
+        is_internal = reg.college.strip() == "MITS"
+        
+        if reg.event.name == "E - Sports":
+            if reg.participation_mode == "Ludo":
+                amount = 50 if is_internal else 100
+            else:
+                amount = 100 if is_internal else 200
+        else:
+            amount = team_size * (50 if is_internal else 100)
+        
+        total_amount += amount
+        
+        # Track totals by event
+        event_name = reg.event.name
+        if event_name not in event_totals:
+            event_totals[event_name] = {
+                'total': 0,
+                'internal_count': 0,
+                'external_count': 0,
+                'internal_amount': 0,
+                'external_amount': 0
+            }
+        
+        event_totals[event_name]['total'] += amount
+        if is_internal:
+            event_totals[event_name]['internal_count'] += 1
+            event_totals[event_name]['internal_amount'] += amount
+        else:
+            event_totals[event_name]['external_count'] += 1
+            event_totals[event_name]['external_amount'] += amount
+
+    context = {
+        'total_amount': total_amount,
+        'event_totals': event_totals,
+    }
+    return render(request, 'amount_details.html', context)
+
