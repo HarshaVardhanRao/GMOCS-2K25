@@ -266,3 +266,171 @@ def event_registrations(request):
     print("Total", total)
     print("Registrations", regs)
     return render(request, 'event_registrations.html', {'regs': regs, 'Internal': intenal, 'External': external, 'Total': total})
+
+@login_required
+def pending_registration_list(request):
+    if request.user.is_superuser:
+    # Get the search parameters
+        search_date = request.GET.get('search_date')
+        print(search_date)
+        event_id = request.GET.get('event')  # Get the category from the query parameters
+        if search_date == '':
+            search_date = None
+        # Retrieve all registrations by default
+        regs = registrations.objects.filter(status="Pending")
+
+        # Filter registrations by date if provided
+        if search_date:
+            try:
+                date_object = datetime.strptime(search_date, '%Y-%m-%d').date()
+                regs = regs.filter(registered_on=date_object)
+            except ValueError:
+                pass
+
+        # Filter registrations by category if provided
+        if event_id:
+            regs = regs.filter(event__id=event_id)
+
+        # Handle CSV download
+        if "download" in request.GET:
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="registrations.csv"'
+
+            writer = csv.writer(response)
+            writer.writerow(['Name', 'Roll Number', 'Year', 'Branch', 'Section', 'Email', 'Mobile Number', 'Event', 'Date'])
+            for reg in regs:
+                writer.writerow([
+                    reg.name, reg.roll_number, reg.year, reg.branch, reg.section,
+                    reg.email, reg.mobile_number, reg.event.name, reg.registered_on
+                ])
+            return response
+
+        # Retrieve all categories for the filter dropdown\
+        events = Events.objects.all()
+
+        context = {
+            'registrations': regs,
+            'search_date': search_date,
+            'selected_event': event_id,
+            'events': events,
+        }
+        return render(request, 'registrations.html', context)
+    elif request.user.is_authenticated:
+        
+        event = Events.objects.filter(coordinator=request.user.id).first()
+        regs = registrations.objects.filter(event=event)
+        return render(request, 'registrations.html', {'registrations': regs})
+    else:
+        return redirect('login')
+
+@login_required
+def rejected_registration_list(request):
+    if request.user.is_superuser:
+    # Get the search parameters
+        search_date = request.GET.get('search_date')
+        print(search_date)
+        event_id = request.GET.get('event')  # Get the category from the query parameters
+        if search_date == '':
+            search_date = None
+        # Retrieve all registrations by default
+        regs = registrations.objects.filter(status="Rejected")
+
+        # Filter registrations by date if provided
+        if search_date:
+            try:
+                date_object = datetime.strptime(search_date, '%Y-%m-%d').date()
+                regs = regs.filter(registered_on=date_object)
+            except ValueError:
+                pass
+
+        # Filter registrations by category if provided
+        if event_id:
+            regs = regs.filter(event__id=event_id)
+
+        # Handle CSV download
+        if "download" in request.GET:
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="registrations.csv"'
+
+            writer = csv.writer(response)
+            writer.writerow(['Name', 'Roll Number', 'Year', 'Branch', 'Section', 'Email', 'Mobile Number', 'Event', 'Date'])
+            for reg in regs:
+                writer.writerow([
+                    reg.name, reg.roll_number, reg.year, reg.branch, reg.section,
+                    reg.email, reg.mobile_number, reg.event.name, reg.registered_on
+                ])
+            return response
+
+        # Retrieve all categories for the filter dropdown\
+        events = Events.objects.all()
+
+        context = {
+            'registrations': regs,
+            'search_date': search_date,
+            'selected_event': event_id,
+            'events': events,
+        }
+        return render(request, 'registrations.html', context)
+    elif request.user.is_authenticated:
+        
+        event = Events.objects.filter(coordinator=request.user.id).first()
+        regs = registrations.objects.filter(event=event)
+        return render(request, 'registrations.html', {'registrations': regs})
+    else:
+        return redirect('login')
+
+@login_required
+def approved_registration_list(request):
+    if request.user.is_superuser:
+    # Get the search parameters
+        search_date = request.GET.get('search_date')
+        print(search_date)
+        event_id = request.GET.get('event')  # Get the category from the query parameters
+        if search_date == '':
+            search_date = None
+        # Retrieve all registrations by default
+        regs = registrations.objects.filter(status="Approved")
+
+        # Filter registrations by date if provided
+        if search_date:
+            try:
+                date_object = datetime.strptime(search_date, '%Y-%m-%d').date()
+                regs = regs.filter(registered_on=date_object)
+            except ValueError:
+                pass
+
+        # Filter registrations by category if provided
+        if event_id:
+            regs = regs.filter(event__id=event_id)
+
+        # Handle CSV download
+        if "download" in request.GET:
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="registrations.csv"'
+
+            writer = csv.writer(response)
+            writer.writerow(['Name', 'Roll Number', 'Year', 'Branch', 'Section', 'Email', 'Mobile Number', 'Event', 'Date'])
+            for reg in regs:
+                writer.writerow([
+                    reg.name, reg.roll_number, reg.year, reg.branch, reg.section,
+                    reg.email, reg.mobile_number, reg.event.name, reg.registered_on
+                ])
+            return response
+
+        # Retrieve all categories for the filter dropdown\
+        events = Events.objects.all()
+
+        context = {
+            'registrations': regs,
+            'search_date': search_date,
+            'selected_event': event_id,
+            'events': events,
+        }
+        return render(request, 'registrations.html', context)
+    elif request.user.is_authenticated:
+        
+        event = Events.objects.filter(coordinator=request.user.id).first()
+        regs = registrations.objects.filter(event=event)
+        return render(request, 'registrations.html', {'registrations': regs})
+    else:
+        return redirect('login')
