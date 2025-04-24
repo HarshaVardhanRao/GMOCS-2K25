@@ -1,0 +1,242 @@
+{% extends 'base.html' %} {% block title %}Completed Print Jobs{% endblock %} {%
+block extra_js %}
+<script>
+	// Initialize default printer selection on page load
+	document.addEventListener("DOMContentLoaded", async function () {
+		const printers = await getAvailablePrinters();
+		const printerSelect = document.getElementById("printerSelect");
+		if (printerSelect) {
+			printerSelect.innerHTML =
+				printers.length > 0
+					? printers
+							.map(
+								(printer) =>
+									`<option value="${printer.name}">${printer.name}</option>`
+							)
+							.join("")
+					: '<option value="">Default Printer</option>';
+		}
+	});
+
+	// Function to get available printers
+	async function getAvailablePrinters() {
+		try {
+			if ("printer" in navigator && "getPrinters" in navigator.printer) {
+				const printers = await navigator.printer.getPrinters();
+				return printers;
+			} else {
+				console.log("Web Print API not supported");
+				return [];
+			}
+		} catch (error) {
+			console.error("Error getting printers:", error);
+			return [];
+		}
+	}
+
+	// Function to print a file
+	async function printFile(
+		fileUrl,
+		copies,
+		orientation,
+		pagesPerSheet,
+		jobId
+	) {
+		const printerSelect = document.getElementById("printerSelect");
+		const selectedPrinter = printerSelect ? printerSelect.value : "";
+
+		try {
+			// Fetch the PDF file
+			const response = await fetch(fileUrl);
+			const blob = await response.blob();
+			const pdfUrl = URL.createObjectURL(blob);
+
+			// Create an iframe for printing
+			const iframe = document.createElement("iframe");
+			iframe.style.display = "none";
+			document.body.appendChild(iframe);
+
+			iframe.onload = function () {
+				try {
+					// Add print-specific styling
+					const style = document.createElement("style");
+					style.textContent = `
+                        @page {
+                            size: ${orientation};
+                            margin: 1cm;
+                        }
+                        @media print {
+                            body {
+                                -webkit-print-color-adjust: exact;
+                            }
+                            ${
+								pagesPerSheet > 1
+									? `
+                            body {
+                                transform: scale(${
+									1 / Math.sqrt(pagesPerSheet)
+								});
+                                transform-origin: top left;
+                            }`
+									: ""
+							}
+                        }
+                    `;
+
+					const printWindow = iframe.contentWindow;
+					printWindow.document.head.appendChild(style);
+
+					// Set up print options if supported
+					if (
+						"printer" in navigator &&
+						"setPrinter" in navigator.printer
+					) {
+						navigator.printer.setPrinter(selectedPrinter);
+					}
+
+					// Print the document
+					printWindow.print();
+
+					// Cleanup after printing
+					if (printWindow.matchMedia) {
+						const mediaQueryList = printWindow.matchMedia("print");
+						mediaQueryList.addListener(function (mql) {
+							if (!mql.matches) {
+								URL.revokeObjectURL(pdfUrl);
+								document.body.removeChild(iframe);
+							}
+						});
+					}
+				} catch (error) {
+					console.error("Print configuration error:", error);
+					window.open(fileUrl, "_blank")?.print();
+				}
+			};
+
+			// Load the PDF into the iframe
+			iframe.src = pdfUrl;
+		} catch (error) {
+			console.error("Print error:", error);
+			alert(
+				"Error preparing file for print. Opening in new tab instead."
+			);
+			window.open(fileUrl, "_blank");
+		}
+	}
+</script>
+{% endblock %} {% block content %}
+<div class="container mt-5">
+	<div class="card">
+		<div class="card-header bg-white">
+			<div class="d-flex justify-content-between align-items-center">
+				<h2 class="mb-0">Completed Print Jobs</h2>
+				<div class="d-flex gap-2 align-items-center">
+					<a
+						href="{% url 'print_jobs' %}"
+						class="btn btn-outline-primary"
+					>
+						<i class="fas fa-list me-2"></i>Pending Jobs
+					</a>
+					<a href="{% url 'upload_file' %}" class="btn btn-primary">
+						<i class="fas fa-upload me-2"></i>Upload New File
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- Jobs Table -->
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-hover align-middle">
+					<thead class="table-light">
+						<tr>
+							<th>File</th>
+							<th>User</th>
+							<th>Copies</th>
+							<th>Orientation</th>
+							<th>Pages/Sheet</th>
+							<th>Status</th>
+							<th>Completed At</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for job in jobs %}
+						<tr data-job-id="{{ job.id }}">
+							<td>
+								<a
+									href="{{ job.file.url }}"
+									target="_blank"
+									class="text-decoration-none"
+								>
+									<i class="far fa-file-alt me-2"></i>
+									{{ job.file.name|slice:"12:" }}
+								</a>
+							</td>
+							<td>{{ job.user.username }}</td>
+							<td data-copies="{{ job.copies }}">
+								{{ job.copies }}
+							</td>
+							<td data-orientation="{{ job.orientation }}">
+								<i
+									class="fas fa-{{ job.orientation }} me-1"
+								></i>
+								{{ job.orientation|title }}
+							</td>
+							<td data-pages="{{ job.pages_per_sheet }}">
+								{{ job.pages_per_sheet }}
+							</td>
+							<td>
+								<span class="badge rounded-pill bg-success">
+									{{ job.status }}
+								</span>
+							</td>
+							<td>{{ job.completed_at|date:"M d, Y H:i" }}</td>
+							<td>
+								<button
+									onclick="printFile('{{ job.file.url }}', {{ job.copies }}, '{{ job.orientation }}', {{ job.pages_per_sheet }}, '{{ job.id }}')"
+									class="btn btn-sm btn-outline-primary"
+								>
+									<i class="fas fa-print"></i> Print Again
+								</button>
+							</td>
+						</tr>
+						{% empty %}
+						<tr>
+							<td colspan="8" class="text-center py-4">
+								<div class="text-muted">
+									<i class="fas fa-inbox fa-2x mb-3"></i>
+									<p>No completed print jobs found</p>
+								</div>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %} {% block extra_css %}
+<style>
+	.card {
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+	}
+	.table > :not(caption) > * > * {
+		padding: 1rem 0.75rem;
+	}
+	.badge {
+		font-size: 0.85em;
+		padding: 0.5em 0.8em;
+	}
+	.btn-outline-primary {
+		border-color: #7c3aed;
+		color: #7c3aed;
+	}
+	.btn-outline-primary:hover {
+		background-color: #7c3aed;
+		border-color: #7c3aed;
+		color: white;
+	}
+</style>
+{% endblock %}

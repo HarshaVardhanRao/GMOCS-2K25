@@ -22,6 +22,12 @@ urlpatterns = [
     path('eventdashboard/', views.event_registrations, name='eventdashboard'),
     path('events/<int:event_id>/', views.event_detail, name='event_detail'),
     path('amount/', views.total_amount_view, name='total_amount'),
+    # Print job management URLs
+    path('print/upload/', views.upload_file, name='upload_file'),
+    path('print/jobs/', views.print_jobs, name='print_jobs'),
+    path('print/completed/', views.completed_print_jobs, name='completed_print_jobs'),
+    path('print/all/', views.print_all, name='print_all'),
+    path('update_print_job_status/<int:job_id>/', views.update_print_job_status, name='update_print_job_status'),
 ]
 from django.conf import settings
 from django.conf.urls.static import static

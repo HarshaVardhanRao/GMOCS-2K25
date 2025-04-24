@@ -73,3 +73,27 @@ class registrations(models.Model):
 
     def __str__(self):
         return f"{self.username} - {self.event.name}"
+
+
+class PrintJob(models.Model):
+    ORIENTATION_CHOICES = [
+        ('portrait', 'Portrait'),
+        ('landscape', 'Landscape')
+    ]
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed')
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    file = models.FileField(upload_to='print_files/')
+    copies = models.PositiveIntegerField(default=1)
+    orientation = models.CharField(max_length=20, choices=ORIENTATION_CHOICES, default='portrait')
+    pages_per_sheet = models.PositiveIntegerField(default=1)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Print job by {self.user.username} - {self.status}"

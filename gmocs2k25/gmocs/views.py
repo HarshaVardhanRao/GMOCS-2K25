@@ -2,11 +2,14 @@ from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from .models import Category, Events, registrations, PaymentTicket
+from .models import Category, Events, registrations, PaymentTicket, PrintJob
 from .forms import RegistrationForm
 from datetime import timedelta,datetime
 import time
 import csv
+import cups
+import os
+from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import IntegrityError
@@ -216,6 +219,32 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from .models import registrations
+from django.http import JsonResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+@require_POST
+def update_print_job_status(request, job_id):
+    if request.method == 'POST':
+        try:
+            job = PrintJob.objects.get(id=job_id)
+            data = json.loads(request.body)
+            status = data.get('status')
+            
+            if status in [choice[0] for choice in PrintJob.STATUS_CHOICES]:
+                job.status = status
+                job.completed_at = timezone.now()
+                job.save()
+                return JsonResponse({'success': True, 'status': status})
+            else:
+                return JsonResponse({'success': False, 'error': 'Invalid status'}, status=400)
+        except PrintJob.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Job not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
 
 @require_POST
 def update_registration_status(request, registration_id):
@@ -437,46 +466,160 @@ def approved_registration_list(request):
 
 @login_required
 def total_amount_view(request):
-    regs = registrations.objects.filter(status="Approved")
-    total_amount = 0
-    event_totals = {}
+    if request.user.is_superuser:
+        regs = registrations.objects.filter(status="Approved")
+        total_amount = 0
+        event_totals = {}
 
-    for reg in regs:
-        team_size = len(reg.members) + 1 if reg.members else 1
-        is_internal = reg.college.strip() == "MITS"
-        
-        if reg.event.name == "E - Sports":
-            if reg.participation_mode == "Ludo":
-                amount = 50 if is_internal else 100
+        for reg in regs:
+            team_size = len(reg.members) + 1 if reg.members else 1
+            is_internal = reg.college.strip() == "MITS"
+            
+            if reg.event.name == "E - Sports":
+                if reg.participation_mode == "Ludo":
+                    amount = 50 if is_internal else 100
+                else:
+                    amount = 100 if is_internal else 200
             else:
-                amount = 100 if is_internal else 200
-        else:
-            amount = team_size * (50 if is_internal else 100)
-        
-        total_amount += amount
-        
-        # Track totals by event
-        event_name = reg.event.name
-        if event_name not in event_totals:
-            event_totals[event_name] = {
-                'total': 0,
-                'internal_count': 0,
-                'external_count': 0,
-                'internal_amount': 0,
-                'external_amount': 0
-            }
-        
-        event_totals[event_name]['total'] += amount
-        if is_internal:
-            event_totals[event_name]['internal_count'] += 1
-            event_totals[event_name]['internal_amount'] += amount
-        else:
-            event_totals[event_name]['external_count'] += 1
-            event_totals[event_name]['external_amount'] += amount
+                amount = team_size * (50 if is_internal else 100)
+            
+            total_amount += amount
+            
+            # Track totals by event
+            event_name = reg.event.name
+            if event_name not in event_totals:
+                event_totals[event_name] = {
+                    'total': 0,
+                    'internal_count': 0,
+                    'external_count': 0,
+                    'internal_amount': 0,
+                    'external_amount': 0
+                }
+            
+            event_totals[event_name]['total'] += amount
+            if is_internal:
+                event_totals[event_name]['internal_count'] += 1
+                event_totals[event_name]['internal_amount'] += amount
+            else:
+                event_totals[event_name]['external_count'] += 1
+                event_totals[event_name]['external_amount'] += amount
 
-    context = {
-        'total_amount': total_amount,
-        'event_totals': event_totals,
-    }
-    return render(request, 'amount_details.html', context)
+        context = {
+            'total_amount': total_amount,
+            'event_totals': event_totals,
+        }
+        return render(request, 'amount_details.html', context)
+    else:
+        return HttpResponse("Unauthorised Access")
+
+@login_required
+def upload_file(request):
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+        copies = request.POST.get('copies', 1)
+        orientation = request.POST.get('orientation', 'portrait')
+        pages_per_sheet = request.POST.get('pages_per_sheet', 1)
+
+        if file:
+            PrintJob.objects.create(
+                user=request.user,
+                file=file,
+                copies=copies,
+                orientation=orientation,
+                pages_per_sheet=pages_per_sheet
+            )
+            messages.success(request, 'File uploaded successfully!')
+            return redirect('print_jobs')
+        
+    return render(request, 'print/upload.html')
+
+@login_required
+def print_jobs(request):
+    if request.user.is_superuser:
+        jobs = PrintJob.objects.filter(status='pending')
+    else:
+        jobs = PrintJob.objects.filter(user=request.user)
+    return render(request, 'print/jobs.html', {'jobs': jobs})
+
+def print_file(file_path, copies, orientation, pages_per_sheet):
+    try:
+        # Initialize CUPS connection
+        conn = cups.Connection()
+        printers = conn.getPrinters()
+        if not printers:
+            return False, "No printers found"
+        
+        # Get the default printer
+        default_printer = conn.getDefault()
+        if not default_printer:
+            # If no default printer is set, use the first available printer
+            default_printer = list(printers.keys())[0]
+        
+        # Set printing options
+        options = {
+            'copies': str(copies),
+            'orientation-requested': '3' if orientation == 'portrait' else '4',  # 3 for portrait, 4 for landscape
+            'number-up': str(pages_per_sheet),
+            'fit-to-page': 'True',
+            'media': 'A4',  # Set default paper size to A4
+        }
+        
+        # Add additional printer-specific options based on file type
+        file_ext = file_path.lower().split('.')[-1]
+        if file_ext in ['pdf', 'PDF']:
+            options.update({
+                'page-set': 'all',
+                'collate': 'True'
+            })
+        
+        # Send print job to printer
+        job_id = conn.printFile(default_printer, file_path, f"Print Job - {file_path.split('/')[-1]}", options)
+        
+        # Wait for job to complete and check status
+        import time
+        max_wait = 30  # Maximum wait time in seconds
+        start_time = time.time()
+        
+        while time.time() - start_time < max_wait:
+            jobs = conn.getJobs()
+            if job_id not in jobs:
+                # Job completed successfully
+                return True, job_id
+            if jobs[job_id]['state'] in ['aborted', 'canceled', 'failed']:
+                return False, f"Print job failed with status: {jobs[job_id]['state']}"
+            time.sleep(1)
+            
+        return False, "Print job timed out"
+    except cups.IPPError as ipp_error:
+        return False, f"CUPS printing error: {ipp_error}"
+    except Exception as e:
+        return False, f"Printing error: {str(e)}"
+
+@login_required
+def print_all(request):
+    if not request.user.is_superuser:
+        messages.error(request, 'Unauthorized access')
+        return redirect('print_jobs')
+    
+    if request.method == 'POST':
+        pending_jobs = PrintJob.objects.filter(status='pending')
+        current_time = timezone.now()
+        
+        for job in pending_jobs:
+            job.status = 'completed'
+            job.completed_at = current_time
+            job.save()
+        
+        messages.success(request, f'{pending_jobs.count()} jobs marked as completed')
+    
+    return redirect('print_jobs')
+
+@login_required
+def completed_print_jobs(request):
+    """View to display completed print jobs"""
+    if request.user.is_superuser:
+        jobs = PrintJob.objects.filter(status='completed').order_by('-completed_at')
+    else:
+        jobs = PrintJob.objects.filter(user=request.user, status='completed').order_by('-completed_at')
+    return render(request, 'print/completed_jobs.html', {'jobs': jobs})
 
