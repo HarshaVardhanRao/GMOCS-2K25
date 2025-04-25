@@ -306,7 +306,7 @@ def event_registrations(request):
     print("External", external)
     print("Total", total)
     print("Registrations", regs)
-    return render(request, 'event_registrations.html', {'regs': regs, 'Internal': intenal, 'External': external, 'Total': total})
+    return render(request, 'event_registrations.html', {'regs': regs, 'Internal': intenal, 'External': external, 'Total': total, 'Event': event})
 
 @login_required
 def pending_registration_list(request):
