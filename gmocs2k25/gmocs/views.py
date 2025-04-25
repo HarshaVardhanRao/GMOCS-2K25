@@ -278,7 +278,19 @@ def registration_dashboard(request):
         }
         for r in data
     ]
-    return render(request, "dashboard.html", {"registration_data": reg_list})
+    count = 0
+    reg = registrations.objects.filter(status="Approved")
+    for i in reg:
+        if i.event.name == "E - Sports":
+            if i.participation_mode == "Ludo":
+                count += 1
+            else:
+                count += 4
+        else:
+            count += 1
+            if i.members is not None:
+                count += len(i.members)
+    return render(request, "dashboard.html", {"registration_data": reg_list,"count":count})
 
 def event_detail(request,event_id):
     return render(request,'index.html',{"event_id":event_id})
