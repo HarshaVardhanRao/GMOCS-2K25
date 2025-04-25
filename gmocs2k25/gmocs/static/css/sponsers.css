@@ -410,3 +410,78 @@
       }
     }
   }
+
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f0f1c;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.container {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.sponser-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.sponsor-card {
+    background: #1c1c2b;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    width: 350px;
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.sponsor-card:hover {
+    transform: translateY(-10px);
+}
+
+.sponsor-image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.sponsor-image {
+    width: 15vw;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.sponsor-name {
+    font-size: 2rem;
+    margin: 0.5rem 0;
+}
+
+.sponsor-role {
+    font-size: 1.5rem;
+    color: #bbb;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.sponsor-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #a76dff;
+    color: #fff;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.sponsor-link:hover {
+    background-color: #c292ff;
+}
