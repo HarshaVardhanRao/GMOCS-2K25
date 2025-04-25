@@ -16,6 +16,7 @@ urlpatterns = [
     path('login',views.login_user, name='login'),
     path("deploy", views.deploy_view, name="deploy"),
     path("committee", views.committee, name="committee"),
+    path("sponsers", views.sponsers, name="sponsers"),
     path("hello", views.hello, name="hello"),
     path('update-status/<int:registration_id>/', views.update_registration_status, name='update_registration_status'),
     path('dashboard', views.registration_dashboard, name='dashboard'),

@@ -1,0 +1,412 @@
+:root {
+    --primary-bg: linear-gradient(135deg, rgba(26, 27, 46, 0.95) 0%, rgba(42, 43, 78, 0.95) 100%);
+    --card-bg: rgba(29, 43, 74, 0.9);
+    --accent-color: #a76dff;
+    --accent-secondary: #ff89e9;
+    --text-primary: #ffffff;
+    --text-secondary: #8890b5;
+    --border-color: rgba(167, 109, 255, 0.3);
+    --shadow-color: rgba(167, 109, 255, 0.2);
+    --hover-glow: rgba(167, 109, 255, 0.4);
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background: var(--primary-bg);
+    min-height: 100vh;
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    position: relative;
+    overflow-x: hidden;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+  
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transform: translateZ(-50px);
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-out;
+  }
+  
+  .container.animate {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateZ(0) translateY(0);
+    }
+    50% {
+      transform: translateZ(20px) translateY(-10px);
+    }
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 3.5rem;
+    margin-bottom: 3rem;
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-secondary) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 20px rgba(167, 109, 255, 0.5);
+    transform: translateZ(30px);
+    transition: transform 0.3s ease;
+  }
+  
+  h2 {
+    color: var(--text-secondary);
+    text-align: center;
+    font-size: 2rem;
+    margin: 2rem 0;
+    text-shadow: 0 0 8px rgba(167, 109, 255, 0.4);
+    transform: translateZ(20px);
+    transition: transform 0.3s ease;
+  }
+
+  .committee-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 1rem;
+    justify-content: center;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+  }
+  
+  .member-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 15px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transform-style: preserve-3d;
+    transform: translateZ(10px);
+  }
+  
+  .member-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(167, 109, 255, 0.1),
+      transparent
+    );
+    transform: rotate(45deg);
+    animation: lightEffect 3s infinite linear;
+    pointer-events: none;
+  }
+  
+  @keyframes lightEffect {
+    0% {
+      transform: rotate(45deg) translateX(-100%);
+    }
+    100% {
+      transform: rotate(45deg) translateX(100%);
+    }
+  }
+  
+  .member-card:hover {
+    transform: translateY(-10px) scale(1.02) translateZ(30px);
+    box-shadow: 0 15px 30px var(--hover-glow);
+    border-color: var(--accent-color);
+  }
+  
+  .member-image-container {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--accent-color);
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+  }
+  
+  .member-card:hover .member-image-container {
+    transform: translateZ(40px);
+  }
+  
+  .member-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .member-card:hover .member-image {
+    transform: scale(1.1);
+  }
+  
+  .member-name {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+  }
+  
+  .member-card:hover .member-name {
+    transform: translateZ(35px);
+  }
+  
+  .member-role {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+  }
+  
+  .member-card:hover .member-role {
+    transform: translateZ(30px);
+  }
+  
+  .links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+  }
+  
+  .member-card:hover .links {
+    transform: translateZ(45px);
+  }
+  
+  .links a {
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .links a:hover {
+    color: var(--accent-secondary);
+    transform: scale(1.2);
+  }
+  
+  /* Large screens (1200px and up) */
+  @media (min-width: 1200px) {
+    .committee-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2.5rem;
+    }
+  
+    .container {
+      padding: 3rem;
+    }
+  
+    h1 {
+      font-size: 4rem;
+      transform: translateZ(40px);
+    }
+  
+    .member-card:hover {
+      transform: translateY(-15px) scale(1.03) translateZ(40px);
+    }
+  }
+  
+  /* Medium screens (768px to 1199px) */
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .committee-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+  
+    body {
+      padding: 1.5rem;
+    }
+  
+    h1 {
+      font-size: 3rem;
+      transform: translateZ(25px);
+    }
+  
+    h2 {
+      font-size: 1.8rem;
+      transform: translateZ(15px);
+    }
+  
+    .member-card {
+      transform: translateZ(5px);
+    }
+  
+    .member-card:hover {
+      transform: translateY(-8px) scale(1.02) translateZ(25px);
+    }
+  }
+  
+  /* Small screens (480px to 767px) */
+  @media (min-width: 480px) and (max-width: 767px) {
+    .committee-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+  
+    body {
+      padding: 1rem;
+      perspective: 800px;
+    }
+  
+    h1 {
+      font-size: 2.5rem;
+      transform: translateZ(20px);
+      margin-bottom: 2rem;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+      transform: translateZ(10px);
+    }
+  
+    .member-card {
+      padding: 1.2rem;
+      transform: translateZ(5px);
+    }
+  
+    .member-card:hover {
+      transform: translateY(-5px) scale(1.01) translateZ(20px);
+    }
+  
+    .member-image-container {
+      width: 100px;
+      height: 100px;
+    }
+  }
+  
+  /* Extra small screens (up to 479px) */
+  @media (max-width: 479px) {
+    .committee-grid {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+  
+    body {
+      padding: 0.8rem;
+      perspective: 600px;
+    }
+  
+    h1 {
+      font-size: 2rem;
+      transform: translateZ(15px);
+      margin-bottom: 1.5rem;
+    }
+  
+    h2 {
+      font-size: 1.3rem;
+      transform: translateZ(8px);
+      margin: 1.5rem 0;
+    }
+  
+    .member-card {
+      padding: 1rem;
+      transform: translateZ(3px);
+    }
+  
+    .member-card:hover {
+      transform: translateY(-3px) scale(1.01) translateZ(15px);
+    }
+  
+    .member-image-container {
+      width: 90px;
+      height: 90px;
+    }
+  
+    .member-name {
+      font-size: 1.2rem;
+    }
+  
+    .member-role {
+      font-size: 0.9rem;
+    }
+  
+    .links {
+      gap: 0.8rem;
+    }
+  
+    .links a {
+      font-size: 1.1rem;
+    }
+  
+    .container.animate {
+      animation: floatMobile 4s ease-in-out infinite;
+    }
+  
+    @keyframes floatMobile {
+      0%, 100% {
+        transform: translateZ(0) translateY(0);
+      }
+      50% {
+        transform: translateZ(10px) translateY(-5px);
+      }
+    }
+  }
+  
+  /* Touch device optimizations */
+  @media (hover: none) {
+    .member-card {
+      transform: translateZ(5px);
+    }
+  
+    .member-card:hover {
+      transform: translateY(-5px) scale(1.01) translateZ(15px);
+    }
+  
+    .member-image-container:hover {
+      transform: translateZ(20px);
+    }
+  
+    .links a:hover {
+      transform: scale(1.1);
+    }
+  
+    .container.animate {
+      animation: floatTouch 5s ease-in-out infinite;
+    }
+  
+    @keyframes floatTouch {
+      0%, 100% {
+        transform: translateZ(0) translateY(0);
+      }
+      50% {
+        transform: translateZ(15px) translateY(-8px);
+      }
+    }
+  }

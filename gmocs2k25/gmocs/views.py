@@ -42,6 +42,9 @@ def event_list(request):
 def committee(request):
     return render(request, 'committee.html')
 
+def sponsers(request):
+    return render(request, 'sponsers.html')
+
 @csrf_exempt
 def register_event(request):
     if request.method == "POST":
