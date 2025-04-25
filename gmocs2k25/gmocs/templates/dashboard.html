@@ -69,8 +69,10 @@
 
   <script>
     const registrations = {{ registration_data|safe }};
+    console.log(registrations)
 
     const categoryStats = {
+      "Workshop": { Approved: 0, Pending: 0 },
       "Technical": { Approved: 0, Pending: 0 },
       "Non-Technical": { Approved: 0, Pending: 0 }
     };
@@ -91,6 +93,8 @@
       }
       eventStats[event][status]++;
     });
+    console.log(categoryStats)
+    console.log(eventStats)
 
     // Category Cards
     const categorySection = document.getElementById("categoryStats");
@@ -116,6 +120,7 @@
         html += `<tr><td>${evt}</td><td>${e.Approved}</td><td>${e.Pending}</td><td>${total}</td></tr>`;
       }
     }
+    html += `<tr><td><strong>Total</strong></td><td><strong>${registrations.filter(r => r.status === 'Approved').length}</strong></td><td><strong>${registrations.filter(r => r.status === 'Pending').length}</strong></td><td><strong>${registrations.filter(r => r.status === 'Approved').length + registrations.filter(r => r.status === 'Pending').length}</strong></td></tr>`;
     html += `</table>`;
     table.innerHTML = html;
 
