@@ -42,8 +42,8 @@ def event_list(request):
 def committee(request):
     return render(request, 'committee.html')
 
-def sponsers(request):
-    return render(request, 'sponsers.html')
+def sponsors(request):
+    return render(request, 'sponsors.html')
 
 @csrf_exempt
 def register_event(request):

@@ -94,7 +94,7 @@ function createSponsorCard(sponsor) {
 
 // Render sponsors
 function renderSponsors() {
-	const sponsorContainer = document.getElementById("sponsers-list");
+	const sponsorContainer = document.getElementById("sponsors-list");
 	sponsorContainer.innerHTML = sponsors.map(createSponsorCard).join("");
 }
 
