@@ -485,3 +485,61 @@
 .sponsor-link:hover {
     background-color: #c292ff;
 }
+
+.nav-btn {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 1000;
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-secondary) 100%);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 4px 16px var(--shadow-color);
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+    outline: none;
+}
+
+.nav-btn:hover, .nav-btn:focus {
+    background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-color) 100%);
+    box-shadow: 0 8px 24px var(--hover-glow);
+    transform: translateY(-4px) scale(1.05);
+}
+
+.nav-btn i {
+    color: #fff;
+    font-size: 2rem;
+    z-index: index 1000000;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s, transform 0.2s;
+}
+
+.nav-btn:hover i,
+.nav-btn:focus i {
+    transform: scale(1.15);
+}
+
+@media (max-width: 768px) {
+    .nav-btn {
+        top: 1rem;
+        left: 1rem;
+        width: 44px;
+        height: 44px;
+        font-size: 1.4rem;
+    }
+    .nav-btn i {
+        font-size: 1.4rem;
+    }
+}

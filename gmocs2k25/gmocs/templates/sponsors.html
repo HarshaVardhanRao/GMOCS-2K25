@@ -12,10 +12,21 @@
 <body>
     <div id="particles-js"></div>
     <div class="container">
+        <button id="home-btn" class="nav-btn">
+            <i class="fas fa-home" id="home-icon"></i>
+        </button>
         <h1>GMOCS 2K25 Sponsors</h1>
         <h2>Our Sponsors</h2>
         <div id="sponsors-list" class="sponsor-grid"></div>
     </div>
+    <script>
+        function goHome(e) {
+            e.preventDefault();
+            window.location.href = window.innerWidth <= 768 ? "{% url 'mobile' %}" : "{% url 'index' %}";
+        }
+        document.getElementById('home-btn').onclick = goHome;
+        document.getElementById('home-icon').onclick = goHome;
+    </script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="{% static 'js/committee.js' %}"></script>
 </body>
