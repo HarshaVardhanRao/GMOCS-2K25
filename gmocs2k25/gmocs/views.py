@@ -2,7 +2,7 @@ from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from .models import Category, Events, registrations, PaymentTicket, PrintJob,upi_id
+from .models import Category, Events, registrations, PaymentTicket, PrintJob
 from .forms import RegistrationForm
 from datetime import timedelta,datetime
 import time
@@ -14,8 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import IntegrityError
 
-UPI_ID = upi_id.objects.get(name="admin").up_id
-print(UPI_ID)
+
 
 
 def index(request):
