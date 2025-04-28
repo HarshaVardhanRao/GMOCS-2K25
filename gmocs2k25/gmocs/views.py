@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import IntegrityError
 
-UPI_ID = "hvijapuram-3@okaxis"
+UPI_ID = "8309547073@ybl"
 
 def index(request):
     if request.method == "POST":
