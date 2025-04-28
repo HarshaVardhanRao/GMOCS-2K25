@@ -2,7 +2,7 @@ from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from .models import Category, Events, registrations, PaymentTicket, PrintJob
+from .models import Category, Events, registrations, PaymentTicket, PrintJob,upi_id
 from .forms import RegistrationForm
 from datetime import timedelta,datetime
 import time
@@ -14,7 +14,9 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import IntegrityError
 
-UPI_ID = "hvijapuram-3@okaxis"
+UPI_ID = upi_id.objects.get(name="admin").up_id
+print(UPI_ID)
+
 
 def index(request):
     if request.method == "POST":
@@ -304,12 +306,23 @@ def event_registrations(request):
     regs = registrations.objects.filter(event=event).exclude(status="Rejected")
     intenal = regs.filter(college="MITS").count()
     external = regs.exclude(college="MITS").count()
+    count =0
+    for i in regs:
+        if i.event.name == "E - Sports":
+            if i.participation_mode == "Ludo":
+                count += 1
+            else:
+                count += 4
+        else:
+            count += 1
+            if i.members is not None:
+                count += len(i.members)
     total = regs.count()
     print("Internal", intenal)
     print("External", external)
     print("Total", total)
     print("Registrations", regs)
-    return render(request, 'event_registrations.html', {'regs': regs, 'Internal': intenal, 'External': external, 'Total': total, 'Event': event})
+    return render(request, 'event_registrations.html', {'regs': regs, 'Internal': intenal, 'External': external, 'Total': total, 'Event': event,'ind':count})
 
 @login_required
 def pending_registration_list(request):
