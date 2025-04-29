@@ -71,7 +71,7 @@ class registrations(models.Model):
     registred_on = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.username} - {self.event.name}"
+        return f"{self.username} - {self.roll_no} - {self.event.name}"
 
 
 class PrintJob(models.Model):
