@@ -29,6 +29,9 @@ urlpatterns = [
     path('print/completed/', views.completed_print_jobs, name='completed_print_jobs'),
     path('print/all/', views.print_all, name='print_all'),
     path('update_print_job_status/<int:job_id>/', views.update_print_job_status, name='update_print_job_status'),
+    path('get_details', views.get_details, name='get_details'),
+    path('get_all_details', views.get_all_details, name='get_all_details'),
+    path('get_upi_id', views.get_upi_id, name='get_upi_id')
 ]
 from django.conf import settings
 from django.conf.urls.static import static

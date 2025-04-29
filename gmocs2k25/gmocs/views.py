@@ -650,3 +650,40 @@ def completed_print_jobs(request):
         jobs = PrintJob.objects.filter(user=request.user, status='completed').order_by('-completed_at')
     return render(request, 'print/completed_jobs.html', {'jobs': jobs})
 
+import pandas as pd
+import io
+
+@login_required
+def get_details(request):
+    event = Events.objects.get(coordinator=request.user.id)
+    regs = registrations.objects.filter(event=event, status="Approved").values('username', 'roll_no', 'branch', 'members','participation_mode', 'college')
+    df = pd.DataFrame(list(regs))
+    df['members'] = df['members'].apply(lambda x: ', '.join(x) if isinstance(x, list) else x)
+    df.to_excel('approved_registrations.xlsx', index=False)
+    with open('approved_registrations.xlsx', 'rb') as file:
+        response = HttpResponse(file.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=approved_registrations.xlsx'
+    return response
+
+def get_all_details(request):
+    regs = registrations.objects.filter(status="Approved").values('username', 'roll_no', 'branch', 'members','participation_mode', 'college')
+    df = pd.DataFrame(list(regs))
+    df['members'] = df['members'].apply(lambda x: ', '.join(x) if isinstance(x, list) else x)
+    output = io.BytesIO()
+    df.to_excel(output, index=False)
+    output.seek(0)
+    response = HttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=approved_registrations.xlsx'
+    return response
+
+from .models import upiid
+
+def get_upi_id(request):
+    upi = ""
+    print(upiid.objects.all())
+    if upiid.objects.last().upiId:
+        upi = upiid.objects.last().upiId
+        print(upi)
+    else:
+        upi = "maheshkumarvmk@ybl"
+    return HttpResponse(upi)

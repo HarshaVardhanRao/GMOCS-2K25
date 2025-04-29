@@ -6,6 +6,9 @@ import uuid
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 
+class upiid(models.Model):
+    upiId = models.CharField(max_length=50)
+
 class PaymentTicket(models.Model):
     ticket_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
